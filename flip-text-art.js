@@ -222,6 +222,12 @@
 
 	// TODO: use shape contexts as attributes for a weighted bipartite matching problem
 	function findNewMirrors(searchGlyphs) {
+		if (typeof searchGlyphs === "string") {
+			searchGlyphs = splitter.splitGraphemes(searchGlyphs);
+		}
+		// uniquify searchGlyphs
+		searchGlyphs = Array.from(new Set(searchGlyphs));
+
 		const canvas = document.createElement("canvas");
 		const ctx = canvas.getContext("2d");
 		canvas.width = 20;
@@ -236,6 +242,10 @@
 		for (const glyph1 of searchGlyphs) {
 			for (const glyph2 of searchGlyphs) {
 				if (glyph1 === glyph2) {
+					continue;
+				}
+				if (unicodeMirrorCharacters[glyph1] === glyph2 || asciiMirrorCharacters[glyph2] === glyph1) {
+					console.log("Already a known mirror, skipping:", glyph1, glyph2);
 					continue;
 				}
 
@@ -270,5 +280,21 @@
 	window.findNewMirrors = findNewMirrors;
 
 	// console.log(findNewMirrors("AB{}[]()<>"));
-	console.log(findNewMirrors("▀▁▂▃▄▅▆▇█▉▊▋▌▍▎▏▐░▒▓▔▕▖▗▘▙▚▛▜▝▞▟"));
+	// console.log(findNewMirrors("▀▁▂▃▄▅▆▇█▉▊▋▌▍▎▏▐░▒▓▔▕▖▗▘▙▚▛▜▝▞▟"));
+	console.log(findNewMirrors(`🬀	🬁	🬂	🬃	🬄	🬅	🬆	🬇	🬈	🬉	🬊	🬋	🬌	🬍	🬎	🬏
+	U+1FB1x	🬐	🬑	🬒	🬓	🬔	🬕	🬖	🬗	🬘	🬙	🬚	🬛	🬜	🬝	🬞	🬟
+	U+1FB2x	🬠	🬡	🬢	🬣	🬤	🬥	🬦	🬧	🬨	🬩	🬪	🬫	🬬	🬭	🬮	🬯
+	U+1FB3x	🬰	🬱	🬲	🬳	🬴	🬵	🬶	🬷	🬸	🬹	🬺	🬻	🬼	🬽	🬾	🬿
+	U+1FB4x	🭀	🭁	🭂	🭃	🭄	🭅	🭆	🭇	🭈	🭉	🭊	🭋	🭌	🭍	🭎	🭏
+	U+1FB5x	🭐	🭑	🭒	🭓	🭔	🭕	🭖	🭗	🭘	🭙	🭚	🭛	🭜	🭝	🭞	🭟
+	U+1FB6x	🭠	🭡	🭢	🭣	🭤	🭥	🭦	🭧	🭨	🭩	🭪	🭫	🭬	🭭	🭮	🭯
+	U+1FB7x	🭰	🭱	🭲	🭳	🭴	🭵	🭶	🭷	🭸	🭹	🭺	🭻	🭼	🭽	🭾	🭿
+	U+1FB8x	🮀	🮁	🮂	🮃	🮄	🮅	🮆	🮇	🮈	🮉	🮊	🮋	🮌	🮍	🮎	🮏
+	U+1FB9x	🮐	🮑	🮒		🮔	🮕	🮖	🮗	🮘	🮙	🮚	🮛	🮜	🮝	🮞	🮟
+	U+1FBAx	🮠	🮡	🮢	🮣	🮤	🮥	🮦	🮧	🮨	🮩	🮪	🮫	🮬	🮭	🮮	🮯
+	U+1FBBx	🮰	🮱	🮲	🮳	🮴	🮵	🮶	🮷	🮸	🮹	🮺	🮻	🮼	🮽	🮾	🮿
+	U+1FBCx	🯀	🯁	🯂	🯃	🯄	🯅	🯆	🯇	🯈	🯉	🯊					
+	U+1FBDx																
+	U+1FBEx																
+	U+1FBFx	🯰	🯱	🯲	🯳	🯴	🯵	🯶	🯷	🯸	🯹			`));
 })();
