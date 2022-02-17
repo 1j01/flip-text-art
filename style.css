@@ -1,0 +1,21 @@
+h1 {
+	text-align: center;
+}
+
+#input-output {
+	display: flex;
+	flex-direction: row;
+	gap: 5px;
+	align-items: center;
+}
+
+#input-output textarea {
+	flex: 1;
+	min-height: 200px;
+	white-space: pre;
+}
+
+#arrow-container {
+	font-size: 2em;
+	line-height: 100px;
+}
