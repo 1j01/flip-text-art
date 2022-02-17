@@ -178,7 +178,17 @@
 		"╼": "╾",
 		"╾": "╼",
 	};
-	// TODO: detect one-way flips
+	// detect one-way flips
+	const oneWayFlips = [];
+	for (const mapping of [asciiMirrorCharacters, unicodeMirrorCharacters]) {
+		for (const [key, value] of Object.entries(mapping)) {
+			if (mapping[value] !== key) {
+				oneWayFlips.push(key);
+			}
+		}
+	}
+	console.log("One-way flips:", oneWayFlips);
+
 
 	function flipGrapheme(grapheme) {
 		// TODO: make unicode optional
