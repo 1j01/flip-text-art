@@ -3,8 +3,8 @@
 	const splitter = new GraphemeSplitter();
 	function flipText(text, asciiOnly = false, preserveWords = false) {
 		const lines = text.split(/\r?\n/);
-		// TODO: handle different widths of characters, and grapheme clusters, in defining width
-		const width = lines.reduce((max, line) => Math.max(max, line.length), 0);
+		// TODO: handle different widths of characters, in defining width (may want to use ctx.measureText, memoized)
+		const width = lines.reduce((max, line) => Math.max(max, splitter.splitGraphemes(line).length), 0);
 		return lines.map((line) => {
 			let parts = [line];
 			if (preserveWords) {
