@@ -1,12 +1,16 @@
 (() => {
 
 	const splitter = new GraphemeSplitter();
-	function flipText(text) {
+	function flipText(text, asciiOnly = false) {
 		const lines = text.split(/\r?\n/);
 		const width = lines.reduce((max, line) => Math.max(max, line.length), 0);
 		return lines.map((line) => {
 			const graphemes = splitter.splitGraphemes(line);
-			return graphemes.map(flipGrapheme).reverse().join("").padStart(width, " ");
+			return graphemes
+				.map((grapheme) => flipGrapheme(grapheme, asciiOnly))
+				.reverse()
+				.join("")
+				.padStart(width, " ");
 		}).join("\n");
 	}
 
@@ -192,10 +196,8 @@
 	}
 	console.log("One-way flips:", oneWayFlips);
 
-
-	function flipGrapheme(grapheme) {
-		// TODO: make unicode optional
-		if (grapheme in unicodeMirrorCharacters) {
+	function flipGrapheme(grapheme, asciiOnly) {
+		if (grapheme in unicodeMirrorCharacters && !asciiOnly) {
 			return unicodeMirrorCharacters[grapheme];
 		} else if (grapheme in asciiMirrorCharacters) {
 			return asciiMirrorCharacters[grapheme];
