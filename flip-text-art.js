@@ -215,14 +215,8 @@
 		ctx.font = "16px monospace";
 		ctx.textBaseline = "top";
 		ctx.textAlign = "left";
-		// document.body.appendChild(canvas);
-		const imageDataForGlyph = {};
-		for (const glyph of searchGlyphs) {
-			ctx.clearRect(0, 0, canvas.width, canvas.height);
-			ctx.fillText(glyph, 0, 0);
-			// debugger;
-			const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-			imageDataForGlyph[glyph] = imageData;
+		if (window.debugMirrorSearch) {
+			document.body.appendChild(canvas);
 		}
 		const matches = [];
 		for (const glyph1 of searchGlyphs) {
@@ -230,25 +224,31 @@
 				if (glyph1 === glyph2) {
 					continue;
 				}
-				const imageData1 = imageDataForGlyph[glyph1];
-				const imageData2 = imageDataForGlyph[glyph2];
+
+				ctx.clearRect(0, 0, canvas.width, canvas.height);
+				ctx.fillText(glyph1, 0, 0);
+				ctx.save();
+				// ctx.translate(canvas.width, 0);
+				ctx.scale(-1, 1);
+				ctx.textAlign = "right";
+				ctx.globalCompositeOperation = "xor";
+				ctx.fillText(glyph2, 0, 0);
+				ctx.restore();
+
+				const data = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
 				let diff = 0;
-				const { width, height } = imageData1;
-				for (let y = 0; y < height; y++) {
-					for (let x = 0; x < width; x++) {
-						const index1 = (y * width + x) * 4 + 3;
-						const index2 = (y * width + (width - 1 - x)) * 4 + 3;
-						diff += Math.abs(imageData1.data[index1] - imageData2.data[index2]);
-					}
+				for (let i = 0; i < data.length; i += 4) {
+					diff += data[i + 3];
 				}
-				diff /= imageData1.data.length / 4;
-				diff /= 255;
-				// if (diff < 0.125) {
+				diff /= data.length / 4 * 255;
+
+				// if (diff < 0.03) {
 				// 	matches.push([glyph1, glyph2]);
 				// }
 				matches.push([glyph1, glyph2, diff]);
 			}
 		}
+		matches.sort((a, b) => a[2] - b[2]);
 		return matches;
 	}
 
