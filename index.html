@@ -1,44 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<title>Flip Text Art</title>
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<meta name="description" content="Horizontally mirror ASCII art">
-		<meta name="author" content="Isaiah Odhner">
-		<link rel="stylesheet" href="style.css">
-	</head>
-	<body>
-		<h1>Flip Text Art</h1>
-		<div id="input-output">
-			<textarea id="left">
-//     _______________
-//    |____________|__|
-//   //_________//    |
-//  //_________//     |_____\/_ _  _            |                _\/_
-// //_________//      |____/o\\__           \       /            //o\
-// | _________ |      |____ | __              .---.                |
-// | \__/^\__/ |______|_____|_______     --  /     \  --     ______|__
-// |           |      |____ _ ___   `~^~^~^~^~^~^~^~^~^~^~^~`
-// |    ____/  | ,>-v |____
-// |           | ^-<' |  _______   ___                    ____
-// |___________|______| /      | _________     .  .       / /
-//    /      \  \     \/ ( ) /||   ____     .`_._'_..    / /
-//   /       /\  \          /_|/            \   o   /   / /
-//   |      || \  \        /                 \ /   /  _/ /_
-//   |      ||  \__\______/            `. ~. `\___/'./~.' /.~'`.
-//   |      ||          .    '   .  `, .`'`.`.'`'`.~.`'~.`'`.~`  '
-//  /_______//     ,'.    ,  .,    .     .       .  . . ,   ;   '  ,
-//  |______|/ . ' ,
-</textarea>
-			<div id="arrow-container">
-				<div id="arrow-left">⤺</div>
-				<div id="arrow-right">⤻</div>
-			</div>
-			<textarea id="right"></textarea>
+
+<head>
+	<meta charset="utf-8">
+	<title>Flip Text Art</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="Horizontally mirror ASCII art">
+	<meta name="author" content="Isaiah Odhner">
+	<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+	<h1>Flip Text Art</h1>
+	<div id="input-output">
+		<textarea id="left"></textarea>
+		<div id="arrow-container">
+			<div id="arrow-left">⤺</div>
+			<div id="arrow-right">⤻</div>
 		</div>
-		<script src="grapheme-splitter.js"></script>
-		<script src="flip-text-art.js"></script>
-		<script src="demo.js"></script>
-	</body>
+		<textarea id="right">
+                                             __----~~~~~~~~~~~------___
+                                  .  .   ~~//====......          __--~ ~~
+                  -.            \_|//     |||\\  ~~~~~~::::... /~
+               ___-==_       _-~o~  \/    |||  \\            _/~~-
+       __---~~~.==~||\=_    -_--~/_-~|-   |\\   \\        _/~
+   _-~~     .=~    |  \\-_    '-~7  /-   /  ||    \      /
+ .~       .~       |   \\ -_    /  /-   /   ||      \   /
+/  ____  /         |     \\ ~-_/  /|- _/   .||       \ /
+|~~    ~~|--~~~~--_ \     ~==-/   | \~--===~~        .\
+         '         ~-|      /|    |-~\~~       __--~~
+                     |-~~-_/ |    |   ~\_   _-~            /\
+                          /  \     \__   \/~                \__
+                      _--~ _/ | .-~~____--~-/                  ~~==.
+                     ((->/~   '.|||' -_|    ~~-/ ,              . _||
+                                -_     ~\      ~~---l__i__i__i--~~_/
+                                _-~-__   ~)  \--______________--~~
+                              //.-~~~-~_--~- |-------~~~~~~~~
+                                     //.-~~~--\
+		</textarea>
+	</div>
+	<script src="grapheme-splitter.js"></script>
+	<script src="flip-text-art.js"></script>
+	<script src="demo.js"></script>
+</body>
+
 </html>

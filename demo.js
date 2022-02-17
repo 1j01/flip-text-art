@@ -6,4 +6,8 @@ left.oninput = function () {
 right.oninput = function () {
 	left.value = flipText(right.value);
 };
-left.oninput();
+if (left.value.trim()) {
+	left.oninput();
+} else {
+	right.oninput();
+}
