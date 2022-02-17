@@ -206,6 +206,55 @@
 		}
 	}
 
-	window.flipText = flipText;
+	// TODO: use shape contexts as attributes for a weighted bipartite matching problem
+	function findNewMirrors(searchGlyphs) {
+		const canvas = document.createElement("canvas");
+		const ctx = canvas.getContext("2d");
+		canvas.width = 20;
+		canvas.height = 20;
+		ctx.font = "16px monospace";
+		ctx.textBaseline = "top";
+		ctx.textAlign = "left";
+		// document.body.appendChild(canvas);
+		const imageDataForGlyph = {};
+		for (const glyph of searchGlyphs) {
+			ctx.clearRect(0, 0, canvas.width, canvas.height);
+			ctx.fillText(glyph, 0, 0);
+			// debugger;
+			const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+			imageDataForGlyph[glyph] = imageData;
+		}
+		const matches = [];
+		for (const glyph1 of searchGlyphs) {
+			for (const glyph2 of searchGlyphs) {
+				if (glyph1 === glyph2) {
+					continue;
+				}
+				const imageData1 = imageDataForGlyph[glyph1];
+				const imageData2 = imageDataForGlyph[glyph2];
+				let diff = 0;
+				const { width, height } = imageData1;
+				for (let y = 0; y < height; y++) {
+					for (let x = 0; x < width; x++) {
+						const index1 = (y * width + x) * 4 + 3;
+						const index2 = (y * width + (width - 1 - x)) * 4 + 3;
+						diff += Math.abs(imageData1.data[index1] - imageData2.data[index2]);
+					}
+				}
+				diff /= imageData1.data.length / 4;
+				diff /= 255;
+				// if (diff < 0.125) {
+				// 	matches.push([glyph1, glyph2]);
+				// }
+				matches.push([glyph1, glyph2, diff]);
+			}
+		}
+		return matches;
+	}
 
+	window.flipText = flipText;
+	window.findNewMirrors = findNewMirrors;
+
+	// console.log(findNewMirrors("AB{}[]()<>"));
+	console.log(findNewMirrors("▀▁▂▃▄▅▆▇█▉▊▋▌▍▎▏▐░▒▓▔▕▖▗▘▙▚▛▜▝▞▟"));
 })();
