@@ -8,10 +8,10 @@
 		return lines.map((line) => {
 			let parts = [line];
 			if (preserveWords) {
-				parts = line.match(/[a-zA-Z]+(\s+[a-zA-Z]+)*|[^a-zA-Z]+/g) ?? [];
+				parts = line.match(/\p{Letter}+(\s+\p{Letter}+)*|[^\p{Letter}]+/gu) ?? [];
 			}
 			return parts.map((part) => {
-				if (part.match(/^[a-zA-Z]+(\s+[a-zA-Z]+)*$/) && preserveWords) {
+				if (part.match(/^\p{Letter}+(\s+\p{Letter}+)*$/u) && preserveWords) {
 					return part;
 				}
 				const graphemes = splitter.splitGraphemes(part);
