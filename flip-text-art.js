@@ -1,16 +1,75 @@
 (() => {
 
+	function memoize(fn) {
+		const cache = new Map();
+		return (...args) => {
+			const key = JSON.stringify(args);
+			if (!cache.has(key)) {
+				cache.set(key, fn(...args));
+			}
+			return cache.get(key);
+		};
+	}
+	function sum(accumulator, currentValue) {
+		return accumulator + currentValue;
+	}
+	
+	const measuringCanvas = document.createElement('canvas');
+	const measuringContext = measuringCanvas.getContext('2d');
+	measuringCanvas.width = measuringCanvas.height = 1;
+	measuringContext.font = "16px monospace";
+	const measureText = memoize((text) => {
+		return measuringContext.measureText(text).width;
+	});
+
+	// There are a few more space characters in Unicode,
+	// but this is a list of ones to generate to match a specific width.
+	// It's probably too many different ones already; some might cause problems.
+	const spaceChars = "\u0020\u00A0\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u202F\u205F\u3000";
+	const spaceWidths = spaceChars.split("").map(measureText);
+	console.log(spaceChars, spaceWidths);
+	function fitSpaces(targetWidth) {
+		let width = 0;
+		let text = "";
+		while (width < targetWidth) {
+			const char = " ";
+			const charWidth = measureText(char);
+			if (width + charWidth > targetWidth) {
+				break;
+			}
+			width += charWidth;
+			text += char;
+		}
+		// while (width < targetWidth) {
+			for (let i = 0; i < spaceChars.length; i++) {
+				const char = spaceChars[i];
+				const charWidth = spaceWidths[i];
+				if (width + charWidth <= targetWidth) {
+					text += char;
+					width += charWidth;
+				}
+			}
+		// }
+		return text;
+	}
+	window._fitSpaces = fitSpaces;
+	window._measureText = measureText;
+
 	const splitter = new GraphemeSplitter();
 	function flipText(text, asciiOnly = false, preserveWords = false) {
 		const lines = text.split(/\r?\n/);
-		// TODO: handle different widths of characters, in defining width (may want to use ctx.measureText, memoized)
-		const width = lines.reduce((max, line) => Math.max(max, splitter.splitGraphemes(line).length), 0);
-		return lines.map((line) => {
+		const rows = lines.map((line) => {
+			const width = splitter.splitGraphemes(line).map(measureText).reduce(sum, 0);
 			let parts = [line];
 			if (preserveWords) {
 				parts = line.match(/\p{Letter}+(\s+\p{Letter}+)*|[^\p{Letter}]+/gu) ?? [];
 			}
-			return parts.map((part) => {
+			return { width, parts };
+		});
+		const maxWidth = rows.reduce((acc, row) => Math.max(acc, row.width), 0);
+		
+		return rows.map(({ width, parts }) => {
+			return fitSpaces(maxWidth - width) + parts.map((part) => {
 				if (part.match(/^\p{Letter}+(\s+\p{Letter}+)*$/u) && preserveWords) {
 					return part;
 				}
@@ -21,8 +80,7 @@
 					.join("");
 			})
 				.reverse()
-				.join("")
-				.padStart(width, " ");
+				.join("");
 		}).join("\n");
 	}
 
