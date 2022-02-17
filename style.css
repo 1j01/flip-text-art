@@ -1,3 +1,16 @@
+html,
+body {
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+	box-sizing: border-box;
+	margin: 0;
+}
+
+body {
+	padding: 10px;
+}
+
 h1 {
 	text-align: center;
 }
@@ -7,12 +20,14 @@ h1 {
 	flex-direction: row;
 	gap: 5px;
 	align-items: center;
+	flex: 1;
 }
 
 #input-output textarea {
 	flex: 1;
 	min-height: 200px;
 	white-space: pre;
+	align-self: stretch;
 }
 
 #arrow-container {
