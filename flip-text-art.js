@@ -1,13 +1,25 @@
 (() => {
 
 	const splitter = new GraphemeSplitter();
-	function flipText(text, asciiOnly = false) {
+	function flipText(text, asciiOnly = false, preserveWords = false) {
 		const lines = text.split(/\r?\n/);
+		// TODO: handle different widths of characters, and grapheme clusters, in defining width
 		const width = lines.reduce((max, line) => Math.max(max, line.length), 0);
 		return lines.map((line) => {
-			const graphemes = splitter.splitGraphemes(line);
-			return graphemes
-				.map((grapheme) => flipGrapheme(grapheme, asciiOnly))
+			let parts = [line];
+			if (preserveWords) {
+				parts = line.match(/[a-zA-Z]+(\s+[a-zA-Z]+)*|[^a-zA-Z]+/g) ?? [];
+			}
+			return parts.map((part) => {
+				if (part.match(/^[a-zA-Z]+(\s+[a-zA-Z]+)*$/) && preserveWords) {
+					return part;
+				}
+				const graphemes = splitter.splitGraphemes(part);
+				return graphemes
+					.map((grapheme) => flipGrapheme(grapheme, asciiOnly))
+					.reverse()
+					.join("");
+			})
 				.reverse()
 				.join("")
 				.padStart(width, " ");
