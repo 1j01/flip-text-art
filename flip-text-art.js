@@ -506,10 +506,14 @@
 		"Я": "R",
 		"S": "Ƨ", // or Ꙅ
 		"Ƨ": "S",
-		"Z": "⦣̅", // or 5 or or \ or ⋝ or Ƹ or ⧖/ⴵ or Σ or ﭶ or ﳎ or צּ or ﮑ/ﻜ or ݎ or ܠ̅ (note: some of those are RTL)
-		"⦣̅": "Z",
+		"Z": "\u29f5\u0304\u0332", // or "\u29f5\u0305\u0332" or ⦣̅ or 5 or or \ or ⋝ or Ƹ or ⧖/ⴵ or Σ or ﭶ or ﳎ or צּ or ﮑ/ﻜ or ݎ or ܠ̅ (note: some of those are RTL)
+		"\u29f5\u0304\u0332": "Z",
+		"z": "⦣̅",
+		"⦣̅": "z",
 		"⋝": "⋜", // or Z
+		"⋜": "⋝",
 		"≤": "≥",
+		"≥": "≤",
 	};
 	const symmetricalGlyphs = splitter.splitGraphemes("VWMTYUIOAHXuiowlxmnv!#:.80-_=+|*^");
 	const acceptedOneWayFlips = [
