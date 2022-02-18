@@ -55,17 +55,24 @@
 		return bestString;
 	}
 
-	const splitter = new GraphemeSplitter();
-	function flipText(text, asciiOnly = false, preserveWords = false, trimLines = true) {
+	// sort of lexical parsing, splitting lines then optionally splitting to alternating language and other text parts
+	// (for a mediocre definition of language, excluding punctuation, etc.)
+	const parseText = (text, { preserveWords = false } = {}) => {
 		const lines = text.split(/\r?\n/);
 		const rows = lines.map((line) => {
 			const width = splitter.splitGraphemes(line).map(measureText).reduce(sum, 0);
 			let parts = [line];
 			if (preserveWords) {
-				parts = line.match(/\p{Letter}+(\s+\p{Letter}+)*|[^\p{Letter}]+/gu) ?? [];
+				parts = line.match(/\p{Letter}+(\s+\p{Letter}+)*|\P{Letter}+/gu) ?? [];
 			}
 			return { width, parts };
 		});
+		return rows;
+	};
+
+	const splitter = new GraphemeSplitter();
+	function flipText(text, asciiOnly = false, preserveWords = false, trimLines = true) {
+		const rows = parseText(text, { preserveWords });
 		const maxWidth = rows.reduce((acc, row) => Math.max(acc, row.width), 0);
 
 		return rows.map(({ width, parts }) => {
