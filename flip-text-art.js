@@ -520,7 +520,45 @@
 		"𐒈": "&",
 		"Ֆ": "&",
 	};
-	const symmetricalGlyphs = splitter.splitGraphemes("VWMTYUIOAHXuiowlxmnv!#:.80-_=+|*^");
+	const symmetricalGlyphs = [
+		"V",
+		"W",
+		"M",
+		"T",
+		"Y",
+		"U",
+		"I",
+		"O",
+		"A",
+		"H",
+		"X",
+		"u",
+		"i",
+		"o",
+		"w",
+		"l",
+		"x",
+		"m",
+		"n",
+		"v",
+		"!",
+		"#",
+		":",
+		" ",
+		".",
+		"8",
+		"0",
+		" ",
+		"-",
+		" ",
+		"_",
+		"=",
+		"+",
+		"|",
+		"*",
+		"^",
+	];
+
 	const acceptedOneWayFlips = [
 		"Ϙ"
 	];
