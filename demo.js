@@ -20,7 +20,15 @@ right.oninput = function () {
 };
 asciiOnly.onchange = update;
 preserveWords.onchange = update;
-trimLines.onchange = update;
+let tid;
+trimLines.onchange = function () {
+	clearTimeout(tid);
+	update();
+	output.style.textDecoration = "underline rgb(255, 142, 137) 0.2em";
+	tid = setTimeout(() => {
+		output.style.textDecoration = "";
+	}, 1000);
+};
 if (left.value.trim()) {
 	input = left;
 	output = right;
