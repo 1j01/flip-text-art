@@ -27,7 +27,10 @@
 	const ideographicSpace = "\u3000";
 	const spaceWidth = measureText(space);
 	const ideographicSpaceWidth = measureText(ideographicSpace);
-	function fitSpaces(targetWidth) {
+	function fitSpaces(targetWidth, asciiOnly = false) {
+		if (asciiOnly) {
+			return new Array(Math.round(targetWidth / spaceWidth) + 1).join(space);
+		}
 		const spaceCountMax = Math.ceil(targetWidth / spaceWidth);
 		const ideographicSpaceCountMax = Math.ceil(targetWidth / ideographicSpaceWidth);
 		let bestDifference = Infinity;
@@ -59,7 +62,7 @@
 		const maxWidth = rows.reduce((acc, row) => Math.max(acc, row.width), 0);
 		
 		return rows.map(({ width, parts }) => {
-			return fitSpaces(maxWidth - width) + parts.map((part) => {
+			return fitSpaces(maxWidth - width, asciiOnly) + parts.map((part) => {
 				if (part.match(/^\p{Letter}+(\s+\p{Letter}+)*$/u) && preserveWords) {
 					return part;
 				}
