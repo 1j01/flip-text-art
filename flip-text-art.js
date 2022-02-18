@@ -439,6 +439,8 @@
 		"◵": "◶",
 		"◶": "◵",
 		"◷": "◴",
+		"⏢": "▱", // (dubious) or ▭ (symmetricalize)
+		"▱": "⏢", // (dubious) or ▭ (symmetricalize)
 		"?": "⸮",
 		"⸮": "?",
 		"1": "Ɩ",
