@@ -4,8 +4,12 @@
   "description": "Mirror ASCII art and such",
   "main": "flip-text-art.js",
   "scripts": {
-    "test": "eslint *.js",
+    "test": "jest && eslint *.js",
     "start": "live-server --port=8008"
+  },
+  "jest": {
+    "testPathIgnorePatterns": [".history"],
+    "testEnvironment": "jsdom"
   },
   "repository": {
     "type": "git",
@@ -27,7 +31,9 @@
   },
   "homepage": "https://github.com/1j01/flip-text-art#readme",
   "devDependencies": {
+    "canvas": "^2.9.0",
     "eslint": "^8.9.0",
+    "jest": "^27.5.1",
     "live-server": "^1.2.1"
   }
 }
