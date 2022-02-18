@@ -564,7 +564,19 @@
 			array.join(" ⟶ ")
 		));
 	}
-
+	// detect mappings that won't apply because they won't be split at that boundary
+	const unapplicableMappings = [];
+	for (const grapheme of allKeys) {
+		if (!splitter.splitGraphemes(`Test${grapheme}Test`).includes(grapheme)) {
+			unapplicableMappings.push(grapheme);
+		} else if (`<${flipGrapheme(grapheme)}>` !== flipText(`<${grapheme}>`)) {
+			console.warn("How did this happen? splitGraphemes gives the key, but flipText doesn't give the same result?");
+			unapplicableMappings.push(grapheme);
+		}
+	}
+	if (unapplicableMappings.length > 0) {
+		console.log("There are mappings that won't apply because they won't be split at that boundary:", unapplicableMappings);
+	}
 
 	function flipGrapheme(grapheme, asciiOnly) {
 		if (grapheme in unicodeMirrorCharacters && !asciiOnly) {
