@@ -527,7 +527,11 @@
 	const unacceptedOneWayFlips = [];
 	for (const key of allKeys) {
 		if (flipGrapheme(flipGrapheme(key)) !== key && !acceptedOneWayFlips.includes(key)) {
-			unacceptedOneWayFlips.push([key, flipGrapheme(key), flipGrapheme(flipGrapheme(key))]);
+			const result = [key, flipGrapheme(key)];
+			if (flipGrapheme(flipGrapheme(key)) !== flipGrapheme(key)) {
+				result.push(flipGrapheme(flipGrapheme(key)));
+			}
+			unacceptedOneWayFlips.push(result);
 		}
 	}
 	if (unacceptedOneWayFlips.length > 0) {
