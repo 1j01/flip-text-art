@@ -14,6 +14,12 @@
 	function sum(accumulator, currentValue) {
 		return accumulator + currentValue;
 	}
+	function uniquify(array) {
+		return Array.from(new Set(array));
+	}
+	function findDuplicates(array) {
+		return array.filter((value, index, self) => self.indexOf(value) !== index);
+	}
 
 	const measuringCanvas = document.createElement("canvas");
 	const measuringContext = measuringCanvas.getContext("2d");
@@ -652,10 +658,18 @@
 		"\t",
 		" ",
 	];
+	const duplicatesInSymmetricalGlyphs = findDuplicates(symmetricalGlyphs);
+	if (duplicatesInSymmetricalGlyphs.length > 0) {
+		console.log("Duplicates in symmetricalGlyphs:", duplicatesInSymmetricalGlyphs);
+	}
 
 	const acceptedOneWayFlips = [
 		"Ϙ"
 	];
+	const duplicatesInAcceptedOneWayFlips = findDuplicates(acceptedOneWayFlips);
+	if (duplicatesInAcceptedOneWayFlips.length > 0) {
+		console.log("Duplicates in acceptedOneWayFlips:", duplicatesInAcceptedOneWayFlips);
+	}
 	// detect one-way flips
 	// const unacceptedOneWayFlips = [];
 	// for (const mapping of [asciiMirrorCharacters, unicodeMirrorCharacters]) {
@@ -668,7 +682,7 @@
 	// if (unacceptedOneWayFlips.length > 0) {
 	// 	console.log("There are one-way flips that have not been accepted:", unacceptedOneWayFlips);
 	// }
-	const allKeys = Array.from(new Set(Object.keys(asciiMirrorCharacters).concat(Object.keys(unicodeMirrorCharacters))));
+	const allKeys = uniquify(Object.keys(asciiMirrorCharacters).concat(Object.keys(unicodeMirrorCharacters)));
 	const unacceptedOneWayFlips = [];
 	for (const key of allKeys) {
 		if (flipGrapheme(flipGrapheme(key)) !== key && !acceptedOneWayFlips.includes(key)) {
@@ -725,8 +739,7 @@
 		if (typeof searchGlyphs === "string") {
 			searchGlyphs = splitter.splitGraphemes(searchGlyphs);
 		}
-		// uniquify searchGlyphs
-		searchGlyphs = Array.from(new Set(searchGlyphs));
+		searchGlyphs = uniquify(searchGlyphs);
 
 		const canvas = document.createElement("canvas");
 		const ctx = canvas.getContext("2d");
@@ -780,8 +793,7 @@
 		if (typeof searchGlyphs === "string") {
 			searchGlyphs = splitter.splitGraphemes(searchGlyphs);
 		}
-		// uniquify searchGlyphs
-		searchGlyphs = Array.from(new Set(searchGlyphs));
+		searchGlyphs = uniquify(searchGlyphs);
 
 		const missingMirrors = [];
 		for (const glyph of searchGlyphs) {
