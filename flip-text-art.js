@@ -50,7 +50,7 @@
 	}
 
 	const splitter = new GraphemeSplitter();
-	function flipText(text, asciiOnly = false, preserveWords = false) {
+	function flipText(text, asciiOnly = false, preserveWords = false, trimLines = true) {
 		const lines = text.split(/\r?\n/);
 		const rows = lines.map((line) => {
 			const width = splitter.splitGraphemes(line).map(measureText).reduce(sum, 0);
@@ -74,7 +74,8 @@
 					.join("");
 			})
 				.reverse()
-				.join("");
+				.join("")
+				.replace(trimLines ? /\s+$/ : "", "");
 		}).join("\n");
 	}
 
