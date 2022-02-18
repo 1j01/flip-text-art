@@ -514,6 +514,11 @@
 		"⋜": "⋝",
 		"≤": "≥",
 		"≥": "≤",
+		"&": "კ", // or ₰ or 𐒈 or Ֆ
+		"₰": "&",
+		"კ": "&",
+		"𐒈": "&",
+		"Ֆ": "&",
 	};
 	const symmetricalGlyphs = splitter.splitGraphemes("VWMTYUIOAHXuiowlxmnv!#:.80-_=+|*^");
 	const acceptedOneWayFlips = [
