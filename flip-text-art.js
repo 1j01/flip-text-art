@@ -549,6 +549,7 @@
 
 	window.flipText = flipText;
 	window.findNewMirrors = findNewMirrors;
+	window.findMissingMirrors = findMissingMirrors;
 
 	// console.log(findNewMirrors("AB{}[]()<>"));
 	// console.log(findNewMirrors("▀▁▂▃▄▅▆▇█▉▊▋▌▍▎▏▐░▒▓▔▕▖▗▘▙▚▛▜▝▞▟"));
@@ -571,15 +572,15 @@
 	// 	U+1FBEx
 	// 	U+1FBFx	🯰	🯱	🯲	🯳	🯴	🯵	🯶	🯷	🯸	🯹
 	// `;
-	const geometricShapes = `
-		0	1	2	3	4	5	6	7	8	9	A	B	C	D	E	F
-		U+25Ax	■	□	▢	▣	▤	▥	▦	▧	▨	▩	▪	▫	▬	▭	▮	▯
-		U+25Bx	▰	▱	▲	△	▴	▵	▶	▷	▸	▹	►	▻	▼	▽	▾	▿
-		U+25Cx	◀	◁	◂	◃	◄	◅	◆	◇	◈	◉	◊	○	◌	◍	◎	●
-		U+25Dx	◐	◑	◒	◓	◔	◕	◖	◗	◘	◙	◚	◛	◜	◝	◞	◟
-		U+25Ex	◠	◡	◢	◣	◤	◥	◦	◧	◨	◩	◪	◫	◬	◭	◮	◯
-		U+25Fx	◰	◱	◲	◳	◴	◵	◶	◷	◸	◹	◺	◻	◼	◽	◾	◿
-	`;
+	// const geometricShapes = `
+	// 	0	1	2	3	4	5	6	7	8	9	A	B	C	D	E	F
+	// 	U+25Ax	■	□	▢	▣	▤	▥	▦	▧	▨	▩	▪	▫	▬	▭	▮	▯
+	// 	U+25Bx	▰	▱	▲	△	▴	▵	▶	▷	▸	▹	►	▻	▼	▽	▾	▿
+	// 	U+25Cx	◀	◁	◂	◃	◄	◅	◆	◇	◈	◉	◊	○	◌	◍	◎	●
+	// 	U+25Dx	◐	◑	◒	◓	◔	◕	◖	◗	◘	◙	◚	◛	◜	◝	◞	◟
+	// 	U+25Ex	◠	◡	◢	◣	◤	◥	◦	◧	◨	◩	◪	◫	◬	◭	◮	◯
+	// 	U+25Fx	◰	◱	◲	◳	◴	◵	◶	◷	◸	◹	◺	◻	◼	◽	◾	◿
+	// `;
 	// console.log(findNewMirrors(symbolsForLegacyComputing));
 	// console.log(findMissingMirrors(symbolsForLegacyComputing));
 	// console.log(findNewMirrors(geometricShapes));
