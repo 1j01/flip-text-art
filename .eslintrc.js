@@ -9,6 +9,7 @@ module.exports = {
 		"ecmaVersion": "latest",
 		"sourceType": "module"
 	},
+	"ignorePatterns": ["grapheme-splitter.js"],
 	"rules": {
 		"indent": [
 			"error",
