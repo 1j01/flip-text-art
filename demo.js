@@ -35,8 +35,10 @@ trimLines.onchange = function () {
 	clearTimeout(tid);
 	update();
 	output.style.textDecoration = "underline rgb(255, 142, 137) 0.2em";
+	bottom.style.textDecoration = "underline rgb(255, 142, 137) 0.2em";
 	tid = setTimeout(() => {
 		output.style.textDecoration = "";
+		bottom.style.textDecoration = "";
 	}, 1000);
 };
 if (left.value.trim()) {
