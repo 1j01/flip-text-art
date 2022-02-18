@@ -135,40 +135,6 @@
 		// "9": "e",
 		"&": "B", // or b, 8, 3, S
 		"B": "&",
-		// symmetrical glyphs:
-		// "V": "V",
-		// "W": "W",
-		// "M": "M",
-		// "T": "T",
-		// "Y": "Y",
-		// "U": "U",
-		// "I": "I",
-		// "O": "O",
-		// "A": "A",
-		// "H": "H",
-		// "X": "X",
-		// "u": "u",
-		// "i": "i",
-		// "o": "o",
-		// "w": "w",
-		// "l": "l",
-		// "x": "x",
-		// "m": "m",
-		// "n": "n",
-		// "v": "v",
-		// "!": "!",
-		// "#": "#",
-		// ":": ":",
-		// ".": ".",
-		// "8": "8",
-		// "0": "0",
-		// "-": "-",
-		// "_": "_",
-		// "=": "=",
-		// "+": "+",
-		// "|": "|",
-		// "*": "*",
-		// "^": "^",
 		// super-glyphs:
 		// "c|": " b",
 		// " K": ">|",
@@ -541,6 +507,7 @@
 		"S": "Ƨ", // or Ꙅ
 		"Ƨ": "S",
 	};
+	const symmetricalGlyphs = splitter.splitGraphemes("VWMTYUIOAHXuiowlxmnv!#:.80-_=+|*^");
 	const acceptedOneWayFlips = [
 		"Ϙ"
 	];
@@ -648,24 +615,34 @@
 		return matches;
 	}
 
-	function findMissingMirrors(searchGlyphs) {
+	function detectMissingMirrors(searchGlyphs) {
 		if (typeof searchGlyphs === "string") {
 			searchGlyphs = splitter.splitGraphemes(searchGlyphs);
 		}
 		// uniquify searchGlyphs
 		searchGlyphs = Array.from(new Set(searchGlyphs));
 
+		const missingMirrors = [];
 		for (const glyph of searchGlyphs) {
-			if (!(glyph in unicodeMirrorCharacters) && !(glyph in asciiMirrorCharacters)) {
-				console.log("No mirror mapping yet for:", glyph);
+			if (
+				!(glyph in unicodeMirrorCharacters) &&
+				!(glyph in asciiMirrorCharacters) &&
+				!symmetricalGlyphs.includes(glyph)
+			) {
+				missingMirrors.push(glyph);
 			}
 		}
+
+		if (missingMirrors.length > 0) {
+			console.log("There are missing mirrors (not mapped or marked as symmetrical):", missingMirrors);
+		}
+		// return missingMirrors;
 	}
 
 	window.flipText = flipText;
 	window.blockifyText = blockifyText;
 	window.findNewMirrors = findNewMirrors;
-	window.findMissingMirrors = findMissingMirrors;
+	window.detectMissingMirrors = detectMissingMirrors;
 
 	// console.log(findNewMirrors("AB{}[]()<>"));
 	// console.log(findNewMirrors("▀▁▂▃▄▅▆▇█▉▊▋▌▍▎▏▐░▒▓▔▕▖▗▘▙▚▛▜▝▞▟"));
@@ -698,9 +675,9 @@
 	// 	U+25Fx	◰	◱	◲	◳	◴	◵	◶	◷	◸	◹	◺	◻	◼	◽	◾	◿
 	// `;
 	// console.log(findNewMirrors(symbolsForLegacyComputing));
-	// console.log(findMissingMirrors(symbolsForLegacyComputing));
+	// console.log(detectMissingMirrors(symbolsForLegacyComputing));
 	// console.log(findNewMirrors(geometricShapes));
-	// console.log(findMissingMirrors(geometricShapes));
-	// findMissingMirrors("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789");
+	// console.log(detectMissingMirrors(geometricShapes));
+	detectMissingMirrors("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789");
 
 })();
