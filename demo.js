@@ -1,12 +1,22 @@
-/* global flipText */
+/* global flipText, blockifyText */
 const left = document.getElementById("left");
 const right = document.getElementById("right");
+const bottom = document.getElementById("bottom");
 const asciiOnly = document.getElementById("ascii-only");
 const preserveWords = document.getElementById("preserve-words");
 const trimLines = document.getElementById("trim-lines");
 let input, output;
 function update() {
 	output.value = flipText(input.value, asciiOnly.checked, preserveWords.checked, trimLines.checked);
+	const inputLines = blockifyText(input.value).split(/\r?\n/);
+	const outputLines = output.value.split(/\r?\n/);
+	const joinedLines = [];
+	for (let i = 0; i < Math.max(inputLines.length, outputLines.length); i++) {
+		const inputLine = inputLines[i] || "";
+		const outputLine = outputLines[i] || "";
+		joinedLines.push(inputLine + "  " + outputLine);
+	}
+	bottom.value = joinedLines.join("\n");
 }
 left.oninput = function () {
 	input = left;

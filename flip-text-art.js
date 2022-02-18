@@ -79,6 +79,18 @@
 		}).join("\n");
 	}
 
+	function blockifyText(text) {
+		const lines = text.split(/\r?\n/);
+		const rows = lines.map((line) => {
+			const width = splitter.splitGraphemes(line).map(measureText).reduce(sum, 0);
+			return { width, line };
+		});
+		const maxWidth = rows.reduce((acc, row) => Math.max(acc, row.width), 0);
+		return rows.map(({ width, line }) => {
+			return line + fitSpaces(maxWidth - width);
+		}).join("\n");
+	}
+
 	const asciiMirrorCharacters = {
 		"[": "]",
 		"]": "[",
@@ -548,6 +560,7 @@
 	}
 
 	window.flipText = flipText;
+	window.blockifyText = blockifyText;
 	window.findNewMirrors = findNewMirrors;
 	window.findMissingMirrors = findMissingMirrors;
 

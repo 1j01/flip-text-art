@@ -23,7 +23,8 @@ h1 {
 	flex: 1;
 }
 
-#input-output textarea {
+#input-output textarea,
+#bottom {
 	flex: 1;
 	min-height: 200px;
 	white-space: pre;
