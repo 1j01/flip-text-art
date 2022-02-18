@@ -14,7 +14,7 @@
 	function sum(accumulator, currentValue) {
 		return accumulator + currentValue;
 	}
-	
+
 	const measuringCanvas = document.createElement("canvas");
 	const measuringContext = measuringCanvas.getContext("2d");
 	measuringCanvas.width = measuringCanvas.height = 1;
@@ -61,7 +61,7 @@
 			return { width, parts };
 		});
 		const maxWidth = rows.reduce((acc, row) => Math.max(acc, row.width), 0);
-		
+
 		return rows.map(({ width, parts }) => {
 			return fitSpaces(maxWidth - width, asciiOnly) + parts.map((part) => {
 				if (part.match(/^\p{Letter}+(\s+\p{Letter}+)*$/u) && preserveWords) {
@@ -428,6 +428,7 @@
 		"◸": "◹",
 		"◖": "◗",
 		"◣": "◢",
+		"◢": "◣",
 		"◗": "◖",
 		"◀": "▶",
 		"▻": "◅",
@@ -436,7 +437,23 @@
 		"◰": "◳",
 		"◳": "◰",
 		"◿": "◺",
+		"◹": "◸",
 		"◧": "◨",
+		"▧": "▨",
+		"▨": "▧",
+		"▷": "◁",
+		"◁": "▷",
+		"◅": "▻",
+		"◐": "◑",
+		"◑": "◐",
+		"◭": "◮",
+		"◮": "◭",
+		"◱": "◲",
+		"◲": "◱",
+		"◴": "◷",
+		"◵": "◶",
+		"◶": "◵",
+		"◷": "◴",
 	};
 	// detect one-way flips
 	const oneWayFlips = [];
@@ -564,7 +581,7 @@
 	`;
 	// console.log(findNewMirrors(symbolsForLegacyComputing));
 	// console.log(findMissingMirrors(symbolsForLegacyComputing));
-	console.log(findNewMirrors(geometricShapes));
-	console.log(findMissingMirrors(geometricShapes));
-	
+	// console.log(findNewMirrors(geometricShapes));
+	// console.log(findMissingMirrors(geometricShapes));
+
 })();
