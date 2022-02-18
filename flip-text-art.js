@@ -541,16 +541,46 @@
 		"S": "Ƨ", // or Ꙅ
 		"Ƨ": "S",
 	};
+	const acceptedOneWayFlips = [
+		"Ϙ"
+	];
 	// detect one-way flips
-	const oneWayFlips = [];
-	for (const mapping of [asciiMirrorCharacters, unicodeMirrorCharacters]) {
-		for (const [key, value] of Object.entries(mapping)) {
-			if (mapping[value] !== key) {
-				oneWayFlips.push(key);
-			}
+	// const unacceptedOneWayFlips = [];
+	// for (const mapping of [asciiMirrorCharacters, unicodeMirrorCharacters]) {
+	// 	for (const [key, value] of Object.entries(mapping)) {
+	// 		if (mapping[value] !== key && !acceptedOneWayFlips.includes(key)) {
+	// 			unacceptedOneWayFlips.push(key);
+	// 		}
+	// 	}
+	// }
+	// if (unacceptedOneWayFlips.length > 0) {
+	// 	console.log("There are one-way flips that have not been accepted:", unacceptedOneWayFlips);
+	// }
+	const allKeys = Array.from(new Set(Object.keys(asciiMirrorCharacters).concat(Object.keys(unicodeMirrorCharacters))));
+	const unacceptedOneWayFlips = [];
+	for (const key of allKeys) {
+		if (flipGrapheme(flipGrapheme(key)) !== key && !acceptedOneWayFlips.includes(key)) {
+			unacceptedOneWayFlips.push([key, flipGrapheme(key), flipGrapheme(flipGrapheme(key))]);
 		}
 	}
-	// console.log("One-way flips:", oneWayFlips);
+	if (unacceptedOneWayFlips.length > 0) {
+		console.log("There are one-way flips that have not been accepted:", unacceptedOneWayFlips.map((array) => 
+			array.join(" ⟶ ")
+		));
+	}
+	// detect accepted one-way flips that are not one-way (keeping the acceptance list sensible)
+	const acceptedOneWayFlipsNotOneWay = [];
+	for (const accepted of acceptedOneWayFlips) {
+		if (flipGrapheme(flipGrapheme(accepted)) === accepted) {
+			acceptedOneWayFlipsNotOneWay.push([accepted, flipGrapheme(accepted), flipGrapheme(flipGrapheme(accepted))]);
+		}
+	}
+	if (acceptedOneWayFlipsNotOneWay.length > 0) {
+		console.log("There are accepted one-way flips that are not one-way:", acceptedOneWayFlipsNotOneWay.map((array) => 
+			array.join(" ⟶ ")
+		));
+	}
+
 
 	function flipGrapheme(grapheme, asciiOnly) {
 		if (grapheme in unicodeMirrorCharacters && !asciiOnly) {
@@ -671,5 +701,6 @@
 	// console.log(findMissingMirrors(symbolsForLegacyComputing));
 	// console.log(findNewMirrors(geometricShapes));
 	// console.log(findMissingMirrors(geometricShapes));
+	// findMissingMirrors("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789");
 
 })();
