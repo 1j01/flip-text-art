@@ -447,7 +447,7 @@
 		"ट": "5",
 		"6": "მ",
 		"მ": "6",
-		"7": "٢",
+		"7": "٢", // or Ⲋ or ߖ (RTL)
 		"٢": "7",
 		"9": "୧",
 		"୧": "9",
@@ -506,6 +506,10 @@
 		"Я": "R",
 		"S": "Ƨ", // or Ꙅ
 		"Ƨ": "S",
+		"Z": "⦣̅", // or 5 or or \ or ⋝ or Ƹ or ⧖/ⴵ or Σ or ﭶ or ﳎ or צּ or ﮑ/ﻜ or ݎ or ܠ̅ (note: some of those are RTL)
+		"⦣̅": "Z",
+		"⋝": "⋜", // or Z
+		"≤": "≥",
 	};
 	const symmetricalGlyphs = splitter.splitGraphemes("VWMTYUIOAHXuiowlxmnv!#:.80-_=+|*^");
 	const acceptedOneWayFlips = [
