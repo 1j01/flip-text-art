@@ -4,26 +4,28 @@ const right = document.getElementById("right");
 const asciiOnly = document.getElementById("ascii-only");
 const preserveWords = document.getElementById("preserve-words");
 const trimLines = document.getElementById("trim-lines");
-let lastFn;
+let input, output;
+function update() {
+	output.value = flipText(input.value, asciiOnly.checked, preserveWords.checked, trimLines.checked);
+}
 left.oninput = function () {
-	right.value = flipText(left.value, asciiOnly.checked, preserveWords.checked, trimLines.checked);
-	lastFn = left.oninput;
+	input = left;
+	output = right;
+	update();
 };
 right.oninput = function () {
-	left.value = flipText(right.value, asciiOnly.checked, preserveWords.checked, trimLines.checked);
-	lastFn = right.oninput;
+	input = right;
+	output = left;
+	update();
 };
-asciiOnly.onchange = function () {
-	lastFn?.();
-};
-preserveWords.onchange = function () {
-	lastFn?.();
-};
-trimLines.onchange = function () {
-	lastFn?.();
-};
+asciiOnly.onchange = update;
+preserveWords.onchange = update;
+trimLines.onchange = update;
 if (left.value.trim()) {
-	left.oninput();
+	input = left;
+	output = right;
 } else {
-	right.oninput();
+	input = right;
+	output = left;
 }
+update();
