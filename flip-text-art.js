@@ -22,38 +22,28 @@
 		return measuringContext.measureText(text).width;
 	});
 
-	// There are a few more space characters in Unicode,
-	// but this is a list of ones to generate to match a specific width.
-	// It's probably too many different ones already; some might cause problems.
-	const spaceChars = "\u0020\u00A0\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u202F\u205F\u3000";
-	const spaceWidths = spaceChars.split("").map(measureText);
-	console.log(spaceChars, spaceWidths);
+	// Other spaces (en, em, hair, etc.) are often equal in a monospace font.
+	const space = "\u0020";
+	const ideographicSpace = "\u3000";
+	const spaceWidth = measureText(space);
+	const ideographicSpaceWidth = measureText(ideographicSpace);
 	function fitSpaces(targetWidth) {
-		let width = 0;
-		let text = "";
-		while (width < targetWidth) {
-			const char = " ";
-			const charWidth = measureText(char);
-			if (width + charWidth > targetWidth) {
-				break;
-			}
-			width += charWidth;
-			text += char;
-		}
-		// while (width < targetWidth) {
-			for (let i = 0; i < spaceChars.length; i++) {
-				const char = spaceChars[i];
-				const charWidth = spaceWidths[i];
-				if (width + charWidth <= targetWidth) {
-					text += char;
-					width += charWidth;
+		const spaceCountMax = Math.ceil(targetWidth / spaceWidth);
+		const ideographicSpaceCountMax = Math.ceil(targetWidth / ideographicSpaceWidth);
+		let bestDifference = Infinity;
+		let bestString = "";
+		for (let spaceCount = 0; spaceCount <= spaceCountMax; spaceCount++) {
+			for (let ideographicSpaceCount = 0; ideographicSpaceCount <= ideographicSpaceCountMax; ideographicSpaceCount++) {
+				const width = spaceCount * spaceWidth + ideographicSpaceCount * ideographicSpaceWidth;
+				const difference = Math.abs(width - targetWidth);
+				if (difference < bestDifference) {
+					bestDifference = difference;
+					bestString = new Array(spaceCount + 1).join(space) + new Array(ideographicSpaceCount + 1).join(ideographicSpace);
 				}
 			}
-		// }
-		return text;
+		}
+		return bestString;
 	}
-	window._fitSpaces = fitSpaces;
-	window._measureText = measureText;
 
 	const splitter = new GraphemeSplitter();
 	function flipText(text, asciiOnly = false, preserveWords = false) {
