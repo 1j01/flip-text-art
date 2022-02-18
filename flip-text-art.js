@@ -1,3 +1,4 @@
+/* global GraphemeSplitter */
 (() => {
 
 	function memoize(fn) {
@@ -14,8 +15,8 @@
 		return accumulator + currentValue;
 	}
 	
-	const measuringCanvas = document.createElement('canvas');
-	const measuringContext = measuringCanvas.getContext('2d');
+	const measuringCanvas = document.createElement("canvas");
+	const measuringContext = measuringCanvas.getContext("2d");
 	measuringCanvas.width = measuringCanvas.height = 1;
 	measuringContext.font = "16px monospace";
 	const measureText = memoize((text) => {
@@ -121,9 +122,7 @@
 		// "9": "e",
 		"&": "B", // or b, 8, 3, S
 		"B": "&",
-		// qertypasdfghjkzcbQERPSDFGJKLZCBN
 		// symmetrical glyphs:
-		// VWMTYUIOAHXuiowlxnmv!#:.80-_=+|*^
 		// "V": "V",
 		// "W": "W",
 		// "M": "M",

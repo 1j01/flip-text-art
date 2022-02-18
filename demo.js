@@ -1,3 +1,4 @@
+/* global flipText */
 const left = document.getElementById("left");
 const right = document.getElementById("right");
 const asciiOnly = document.getElementById("ascii-only");
