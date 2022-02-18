@@ -1,0 +1,33 @@
+{
+  "name": "flip-text-art",
+  "version": "1.0.0",
+  "description": "Mirror ASCII art and such",
+  "main": "flip-text-art.js",
+  "scripts": {
+    "test": "eslint *.js",
+    "start": "live-server --port=8008"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/1j01/flip-text-art.git"
+  },
+  "keywords": [
+    "ascii-art",
+    "unicode-art",
+    "text-art",
+    "text",
+    "flip",
+    "mirror",
+    "reverse"
+  ],
+  "author": "Isaiah Odhner",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/1j01/flip-text-art/issues"
+  },
+  "homepage": "https://github.com/1j01/flip-text-art#readme",
+  "devDependencies": {
+    "eslint": "^8.9.0",
+    "live-server": "^1.2.1"
+  }
+}
