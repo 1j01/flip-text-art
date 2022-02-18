@@ -65,6 +65,13 @@
 			if (preserveWords) {
 				parts = line.match(/\p{Letter}+(\s+\p{Letter}+)*|\P{Letter}+/gu) ?? [];
 			}
+			parts = parts.map((part) => {
+				return {
+					text: part,
+					graphemes: splitter.splitGraphemes(part),
+					isWords: /^\p{Letter}+(\s+\p{Letter}+)*$/u.test(part),
+				};
+			});
 			return { width, parts };
 		});
 		return rows;
@@ -77,11 +84,10 @@
 
 		return rows.map(({ width, parts }) => {
 			return fitSpaces(maxWidth - width, asciiOnly) + parts.map((part) => {
-				if (part.match(/^\p{Letter}+(\s+\p{Letter}+)*$/u) && preserveWords) {
-					return part;
+				if (part.isWords && preserveWords) {
+					return part.text;
 				}
-				const graphemes = splitter.splitGraphemes(part);
-				return graphemes
+				return part.graphemes
 					.map((grapheme) => flipGrapheme(grapheme, asciiOnly))
 					.reverse()
 					.join("");
