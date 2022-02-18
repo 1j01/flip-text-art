@@ -544,13 +544,10 @@
 		"!",
 		"#",
 		":",
-		" ",
 		".",
 		"8",
 		"0",
-		" ",
 		"-",
-		" ",
 		"_",
 		"=",
 		"+",
@@ -605,6 +602,55 @@
 		"◼",
 		"◽",
 		"◾",
+		"🬂",
+		"🬋",
+		"🬎",
+		"🬭",
+		"🬰",
+		"🬹",
+		"🭩",
+		"🭫",
+		"🭭",
+		"🭯",
+		"🭶",
+		"🭷",
+		"🭸",
+		"🭹",
+		"🭺",
+		"🭻",
+		"🮀",
+		"🮁",
+		"🮂",
+		"🮃",
+		"🮄",
+		"🮅",
+		"🮆",
+		"🮎",
+		"🮏",
+		"🮐",
+		"🮑",
+		"🮒",
+		"🮗",
+		"🮚",
+		"🮛",
+		"🮦",
+		"🮧",
+		"🮮",
+		"🮯",
+		"🮻",
+		"🮽",
+		"🮿",
+		"🯀",
+		"🯅",
+		"🯆",
+		"🯉",
+		"🯊",
+		"🯰",
+		"🯸",
+		"\n",
+		"\r",
+		"\t",
+		" ",
 	];
 
 	const acceptedOneWayFlips = [
@@ -634,7 +680,7 @@
 		}
 	}
 	if (unacceptedOneWayFlips.length > 0) {
-		console.log("There are one-way flips that have not been accepted:", unacceptedOneWayFlips.map((array) => 
+		console.log("There are one-way flips that have not been accepted:", unacceptedOneWayFlips.map((array) =>
 			array.join(" ⟶ ")
 		));
 	}
@@ -646,11 +692,11 @@
 		}
 	}
 	if (acceptedOneWayFlipsNotOneWay.length > 0) {
-		console.log("There are accepted one-way flips that are not one-way:", acceptedOneWayFlipsNotOneWay.map((array) => 
+		console.log("There are accepted one-way flips that are not one-way:", acceptedOneWayFlipsNotOneWay.map((array) =>
 			array.join(" ⟶ ")
 		));
 	}
-	// detect mappings that won't apply because they won't be split at that boundary
+	// detect mappings that won't apply because the text won't be split at that boundary
 	const unapplicableMappings = [];
 	for (const grapheme of allKeys) {
 		if (!splitter.splitGraphemes(`Test${grapheme}Test`).includes(grapheme)) {
@@ -661,7 +707,7 @@
 		}
 	}
 	if (unapplicableMappings.length > 0) {
-		console.log("There are mappings that won't apply because they won't be split at that boundary:", unapplicableMappings);
+		console.log("There are mappings that won't apply because the text won't be split at that boundary:", unapplicableMappings);
 	}
 
 	function flipGrapheme(grapheme, asciiOnly) {
@@ -789,10 +835,10 @@
 	// 	U+25Ex	◠	◡	◢	◣	◤	◥	◦	◧	◨	◩	◪	◫	◬	◭	◮	◯
 	// 	U+25Fx	◰	◱	◲	◳	◴	◵	◶	◷	◸	◹	◺	◻	◼	◽	◾	◿
 	// `;
-	// console.log(findNewMirrors(symbolsForLegacyComputing));
-	// console.log(detectMissingMirrors(symbolsForLegacyComputing));
-	// console.log(findNewMirrors(geometricShapes));
-	// console.log(detectMissingMirrors(geometricShapes));
+	// findNewMirrors(symbolsForLegacyComputing);
+	// detectMissingMirrors(symbolsForLegacyComputing);
+	// findNewMirrors(geometricShapes);
+	// detectMissingMirrors(geometricShapes);
 	detectMissingMirrors("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789");
 
 })();
