@@ -4,7 +4,8 @@
   "description": "Mirror ASCII art and such",
   "main": "flip-text-art.js",
   "scripts": {
-    "test": "jest && eslint *.js",
+    "test": "jest",
+    "lint": "eslint *.js",
     "start": "live-server --port=8008"
   },
   "jest": {
