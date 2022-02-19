@@ -145,7 +145,8 @@
 		const maxWidth = rows.reduce((acc, row) => Math.max(acc, row.width), 0);
 
 		return rows.map(({ width, parts }) => {
-			return fitSpaces(maxWidth - width, asciiOnly) + parts.map((part) => {
+			let text = fitSpaces(maxWidth - width, asciiOnly);
+			text += parts.map((part) => {
 				if (part.isWords && preserveWords) {
 					return part.text;
 				}
@@ -155,8 +156,11 @@
 					.join("");
 			})
 				.reverse()
-				.join("")
-				.replace(trimLines ? /\s+$/ : "", "");
+				.join("");
+			if (trimLines) {
+				text = text.replace(/\s+$/g, "");
+			}
+			return text;
 		}).join("\n");
 	}
 
