@@ -1049,25 +1049,40 @@
 		const pairs = [];
 		const notFound = [];
 		for (const characterDefinition of characterDefinitions) {
+			const glyph = String.fromCodePoint(characterDefinition.codePoint);
+			if (glyph in unicodeMirrorCharacters || glyph in asciiMirrorCharacters) {
+				console.log("Already in mirror map, skipping:", glyph);
+				continue;
+			}
+			let oppositeName = characterDefinition.name;
 			if (characterDefinition.name.includes("REVERSE")) {
-				let pair;
-				let withoutReversed = characterDefinition.name.replace(/(\s*)REVERSED?\s*/, "$1");
-				for (const otherDefinition of characterDefinitions) {
-					if (otherDefinition.name === withoutReversed) {
-						pair = [characterDefinition, otherDefinition];
-						break;
-					}
-				}
-				if (pair) {
-					pairs.push(pair);
-				} else {
-					notFound.push(characterDefinition);
+				oppositeName = characterDefinition.name.replace(/(\s*)REVERSED?\s*/, "$1");
+			} else if (characterDefinition.name.includes("LEFT")) {
+				oppositeName = characterDefinition.name.replace(/LEFT/g, "RIGHT");
+			} else if (characterDefinition.name.includes("ANTICLOCKWISE")) {
+				// TODO: combine replacements to get e.g.
+				// 2938;RIGHT-SIDE ARC CLOCKWISE ARROW;Sm;0;ON;;;;;N;;;;;
+				// 2939;LEFT-SIDE ARC ANTICLOCKWISE ARROW;Sm;0;ON;;;;;N;;;;;
+				oppositeName = characterDefinition.name.replace(/ANTICLOCKWISE/g, "CLOCKWISE");
+			} else {
+				// don't need to check for RIGHT/CLOCKWISE, we'll get it from the opposite
+				// and for anything else, just skip it
+				continue;
+			}
+			let pair;
+			for (const otherDefinition of characterDefinitions) {
+				if (otherDefinition.name === oppositeName) {
+					pair = [characterDefinition, otherDefinition];
+					break;
 				}
 			}
+			if (pair) {
+				pairs.push(pair);
+			} else {
+				notFound.push(characterDefinition);
+			}
 		}
-		// return { pairs, notFound };
-		// console.log("Found", pairs.length, "pairs of mirror characters:", Object.fromEntries(pairs.map((pair) => [pair[0].name, pair[1].name])));
-		console.log("Found", pairs.length, "pairs of mirror characters:", Object.fromEntries(pairs.map((pair) =>
+		console.log("Found", pairs.length, "new pairs of possible mirror characters:", Object.fromEntries(pairs.map((pair) =>
 			pair.map(({ codePoint }) => String.fromCodePoint(codePoint))
 		)));
 		console.log("Didn't find matching pairs for:", notFound);
