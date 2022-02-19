@@ -28,6 +28,7 @@ h1 {
 	align-self: stretch;
 	display: flex;
 	position: relative;
+	overflow: hidden;
 }
 
 .textarea-overlay {
@@ -38,7 +39,6 @@ h1 {
 	bottom: 0;
 	background-color: rgba(0, 0, 0, 0.5);
 	pointer-events: none;
-	overflow: hidden;
 	/* color: transparent; */
 }
 

@@ -19,6 +19,7 @@ function update() {
 	}
 	bottom.value = joinedLines.join("\n");
 	for (const overlay of overlays) {
+		overlay._cleanup();
 		overlay.remove();
 	}
 	overlays = [];
@@ -30,6 +31,15 @@ function update() {
 		overlay.classList.add("textarea-overlay");
 		textarea.parentNode.appendChild(overlay);
 		overlays.push(overlay);
+		const onScroll = () => {
+			overlay.style.top = -textarea.scrollTop + "px";
+			overlay.style.left = -textarea.scrollLeft + "px";
+		};
+		textarea.addEventListener("scroll", onScroll);
+		onScroll();
+		overlay._cleanup = () => {
+			textarea.removeEventListener("scroll", onScroll);
+		};
 	}
 }
 left.oninput = function () {
