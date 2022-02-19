@@ -85,20 +85,14 @@
 		const container = document.createElement("div");
 		for (const row of rows) {
 			const rowElement = document.createElement("pre");
-			let even = true;
 			for (const part of row.parts) {
 				const partElement = document.createElement("span");
 				partElement.textContent = part.text;
-				partElement.style.boxShadow = `0 0 3px ${even ? "black" : "white"}`;
-				if (even) {
-					partElement.style.backgroundColor = "rgba(0, 0, 0, 0.2)";
-				} else {
-					partElement.style.backgroundColor = "rgba(255, 0, 0, 0.2)";
-				}
+				partElement.style.boxShadow = "0 0 3px black";
+				partElement.style.backgroundColor = "rgba(0, 0, 0, 0.2)";
 				if (part.isWords) {
 					partElement.style.backgroundColor = "rgba(255, 255, 0, 0.2)";
 				}
-				even = !even;
 				rowElement.appendChild(partElement);
 			}
 			container.appendChild(rowElement);
