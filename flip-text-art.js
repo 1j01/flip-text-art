@@ -89,7 +89,7 @@
 				const partElement = document.createElement("span");
 				partElement.textContent = part.text;
 				partElement.style.boxShadow = "0 0 3px black";
-				partElement.style.backgroundColor = "rgba(0, 0, 0, 0.2)";
+				partElement.style.backgroundColor = "rgba(0, 0, 0, 0.1)";
 				if (part.isWords) {
 					partElement.style.backgroundColor = "rgba(255, 255, 0, 0.2)";
 				}
