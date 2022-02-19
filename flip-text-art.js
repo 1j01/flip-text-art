@@ -102,16 +102,15 @@
 				const newParts = [];
 				for (let i = 0; i < parts.length; i++) {
 					// the word parts are not themselves adjacent, there's a space between them
+					const newPart = { ...parts[i] };
 					if (parts[i].isWords && parts[i + 2]?.isWords && parts[i + 1]?.text.trim() === "") {
-						newParts.push({
-							text: parts[i].text + parts[i + 1].text + parts[i + 2].text,
-							graphemes: [...parts[i].graphemes, ...parts[i + 1].graphemes, ...parts[i + 2].graphemes],
-							isWords: true,
-						});
-						i += 2;
-					} else {
-						newParts.push(parts[i]);
+						while (parts[i].isWords && parts[i + 2]?.isWords && parts[i + 1]?.text.trim() === "") {
+							newPart.text += parts[i + 1].text + parts[i + 2].text;
+							newPart.graphemes.push(...parts[i + 1].graphemes, ...parts[i + 2].graphemes);
+							i += 2;
+						}
 					}
+					newParts.push(newPart);
 				}
 				parts = newParts;
 			}

@@ -64,11 +64,16 @@ it("should preserve words with preserveWords = true", () => {
 	expect(flipText("<--this way---", { preserveWords: true })).toBe("---this way-->");
 	expect(flipText("<--ഈ വഴിയേ---", { preserveWords: true })).toBe("---ഈ വഴിയേ-->");
 	expect(flipText("<--這邊走--{", { preserveWords: true })).toBe("}--這邊走-->");
+	expect(flipText("foo bar baz quux", { preserveWords: true })).toBe("foo bar baz quux");
 });
 
 it("should mirror words with preserveWords = false", () => {
 	expect(flipText("Here is a test!", { preserveWords: false })).toBe("!ɈƨɘɈ ɒ ƨi ɘɿɘH");
 	expect(flipText("Do you like it?", { preserveWords: false })).toBe("⸮Ɉi ɘʞil υoγ oᗡ");
+});
+
+it("should mirror non-words with preserveWords = true", () => {
+	expect(flipText("here have a cuppa c[ ]", { preserveWords: true })).toBe("[ ]ɔ here have a cuppa");
 });
 
 it("should mirror Unicode box drawing characters", () => {
@@ -85,7 +90,7 @@ it("should mirror Unicode box drawing characters", () => {
 │ └──┴──┘           │▒
 └───────────────────┘▒
  ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
-`)).toBe(`
+`, { preserveWords: true })).toBe(`
 ╒╤═╕  ╓╥─╖  ╔╦═╗  ┌┬─┐
 ││ │  ║║ ║  ║║ ║  ││ │
 ╞╪═╡  ╟╫─╢  ╠╬═╣  ├┼─┤
