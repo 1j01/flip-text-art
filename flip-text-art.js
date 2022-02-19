@@ -34,7 +34,7 @@
 	// const ideographicSpace = "\u3000";
 	const spaceWidth = measureText(space);
 	// const ideographicSpaceWidth = measureText(ideographicSpace);
-	function fitSpaces(targetWidth, asciiOnly = false) {
+	function fitSpaces(targetWidth /*, asciiOnly = false*/) {
 		// if (asciiOnly) {
 		return new Array(Math.round(targetWidth / spaceWidth) + 1).join(space);
 		// }
@@ -1021,7 +1021,8 @@
 		const unicodeData = await (await fetch("unicode/UnicodeData-14.0.0.txt")).text();
 		const lines = unicodeData.split(/\r?\n/).filter((line) => line.length > 0);
 		const characterDefinitions = lines.map((line) => {
-			const [codePoint, name, generalCategory, canonicalCombiningClass, bidiClass, decompositionMapping, numericValue, numericValueRadix, numericValueDigits, numericValueNumerator, numericValueDenominator, bidiMirrored, unicode1Name, isoComment, simpleUppercaseMapping, simpleLowercaseMapping, simpleTitlecaseMapping] = line.split(";");
+			// const [codePoint, name, generalCategory, canonicalCombiningClass, bidiClass, decompositionMapping, numericValue, numericValueRadix, numericValueDigits, numericValueNumerator, numericValueDenominator, bidiMirrored, unicode1Name, isoComment, simpleUppercaseMapping, simpleLowercaseMapping, simpleTitlecaseMapping] = line.split(";");
+			const [codePoint, name] = line.split(";");
 			if (!name) {
 				console.warn("Invalid line:", line);
 			}
