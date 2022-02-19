@@ -819,17 +819,6 @@
 		console.log("Duplicates in acceptedOneWayFlips:", duplicatesInAcceptedOneWayFlips);
 	}
 	// detect one-way flips
-	// const unacceptedOneWayFlips = [];
-	// for (const mapping of [asciiMirrorCharacters, unicodeMirrorCharacters]) {
-	// 	for (const [key, value] of Object.entries(mapping)) {
-	// 		if (mapping[value] !== key && !acceptedOneWayFlips.includes(key)) {
-	// 			unacceptedOneWayFlips.push(key);
-	// 		}
-	// 	}
-	// }
-	// if (unacceptedOneWayFlips.length > 0) {
-	// 	console.log("There are one-way flips that have not been accepted:", unacceptedOneWayFlips);
-	// }
 	const allKeys = uniquify(Object.keys(asciiMirrorCharacters).concat(Object.keys(unicodeMirrorCharacters)));
 	const unacceptedOneWayFlips = [];
 	for (const key of allKeys) {
@@ -845,6 +834,18 @@
 		console.log("There are one-way flips that have not been accepted:", unacceptedOneWayFlips.map((array) =>
 			array.join(" ⟶ ")
 		));
+		console.groupCollapsed("To accept");
+		console.log("Add these to acceptedOneWayFlips:", unacceptedOneWayFlips.map((array) => array[0]));
+		console.groupEnd();
+		console.groupCollapsed("To add as mirrors");
+		console.log("Add these to unicodeMirrorCharacters:", JSON.stringify(
+			Object.fromEntries(
+				unacceptedOneWayFlips.map((array) => [array[1], array[0]])
+			),
+			null, "\t"
+		));
+		console.log("Note that some may be already in unicodeMirrorCharacters. You should use `npm run lint` to check for duplicate keys.");
+		console.groupEnd();
 	}
 	// detect accepted one-way flips that are not one-way (keeping the acceptance list sensible)
 	const acceptedOneWayFlipsNotOneWay = [];
