@@ -5,6 +5,7 @@ const bottom = document.getElementById("bottom");
 const asciiOnly = document.getElementById("ascii-only");
 const preserveWords = document.getElementById("preserve-words");
 const trimLines = document.getElementById("trim-lines");
+const visualize = document.getElementById("visualize");
 let input, output;
 let overlays = [];
 function update() {
@@ -23,6 +24,9 @@ function update() {
 		overlay.remove();
 	}
 	overlays = [];
+	if (!visualize.checked) {
+		return;
+	}
 	// Showing overlays for all textareas might be confusing,
 	// if it's re-parsing the output, rather than using a transformed structure of the input for the outputs.
 	// for (const textarea of [left, right, bottom]) {
@@ -54,6 +58,7 @@ right.oninput = function () {
 };
 asciiOnly.onchange = update;
 preserveWords.onchange = update;
+visualize.onchange = update;
 let tid;
 trimLines.onchange = function () {
 	clearTimeout(tid);
