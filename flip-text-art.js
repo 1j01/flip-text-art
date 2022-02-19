@@ -606,6 +606,76 @@
 		"კ": "&",
 		"𐒈": "&",
 		"Ֆ": "&",
+		"\\": "/",
+		"ɜ": "ɛ",
+		"ɞ": "ʚ",
+		// "ɿ": "ɾ",
+		"ʢ": "ʡ",
+		"ˁ": "ˀ",
+		"̔": "̓",
+		"ͽ": "ͼ",
+		"϶": "ϵ",
+		"Ͻ": "Ϲ",
+		"Ͽ": "Ͼ",
+		"Ԑ": "З",
+		"ԑ": "з",
+		"ٝ": "ُ",
+		"ܧ": "ܦ",
+		"ྀ": "ི",
+		"ཱྀ": "ཱི",
+		"᚜": "᚛",
+		"᳤": "᳣",
+		"᳦": "᳥",
+		"ᴎ": "ɴ",
+		"ᴙ": "ʀ",
+		"ᴲ": "ᴱ",
+		"ᴻ": "ᴺ",
+		"ᶔ": "ᶓ",
+		"ᶟ": "ᵋ",
+		"‵": "′",
+		"‶": "″",
+		"‷": "‴",
+		"⁋": "¶",
+		"⁏": ";",
+		"Ↄ": "Ⅽ",
+		"ↄ": "c",
+		"∽": "~",
+		"⌐": "¬",
+		"☙": "❧",
+		"⦣": "∠",
+		"⦥": "⦤",
+		"⦰": "∅",
+		"⧹": "⧸",
+		"⫭": "⫬",
+		"⯾": "∟",
+		"⸑": "⸐",
+		"⹁": ",",
+		"〝": "〞",
+		"Ꙅ": "Ѕ",
+		"ꙅ": "ѕ",
+		"Ꙕ": "Ю",
+		"ꙕ": "ю",
+		"Ꙡ": "Ц",
+		"ꙡ": "ц",
+		"Ɜ": "Ɛ",
+		"Ꟶ": "Ⱶ",
+		"ꟶ": "ⱶ",
+		"＼": "／",
+		"𐞎": "ᵉ",
+		"𐞴": "𐞳",
+		"𑨉": "𑨁",
+		"𜽬": "𜽛",
+		"𝄃": "𝄂",
+		"𝼁": "ɡ",
+		"𝼃": "k",
+		"𝼇": "ŋ",
+		"🖑": "🖐",
+		"🖒": "👍", // shows the same direction for me
+		"🖓": "👎",
+		"🖔": "✌",
+		"🙽": "🙼",
+		"🙿": "🙾",
+		"󠁜": "󠀯",
 	};
 	const symmetricalGlyphs = [
 		"V",
@@ -816,7 +886,7 @@
 	}
 
 	// TODO: use shape contexts as attributes for a weighted bipartite matching problem
-	function findNewMirrors(searchGlyphs) {
+	function searchForMirrorsWithVisualMatching(searchGlyphs) {
 		if (typeof searchGlyphs === "string") {
 			searchGlyphs = splitter.splitGraphemes(searchGlyphs);
 		}
@@ -870,6 +940,62 @@
 		return matches;
 	}
 
+	async function searchForMirrorsInUnicodeData() {
+		// https://www.unicode.org/Public/14.0.0/ucd/UnicodeData.txt
+		const unicodeData = await (await fetch("unicode/UnicodeData-14.0.0.txt")).text();
+		const lines = unicodeData.split(/\r?\n/).filter((line) => line.length > 0);
+		const characterDefinitions = lines.map((line) => {
+			const [codePoint, name, generalCategory, canonicalCombiningClass, bidiClass, decompositionMapping, numericValue, numericValueRadix, numericValueDigits, numericValueNumerator, numericValueDenominator, bidiMirrored, unicode1Name, isoComment, simpleUppercaseMapping, simpleLowercaseMapping, simpleTitlecaseMapping] = line.split(";");
+			if (!name) {
+				console.warn("Invalid line:", line);
+			}
+			return {
+				codePoint: parseInt(codePoint, 16),
+				name,
+				// generalCategory,
+				// canonicalCombiningClass,
+				// bidiClass,
+				// decompositionMapping,
+				// numericValue: numericValue && parseInt(numericValue, 16),
+				// numericValueRadix: numericValueRadix && parseInt(numericValueRadix, 16),
+				// numericValueDigits: numericValueDigits && parseInt(numericValueDigits, 16),
+				// numericValueNumerator: numericValueNumerator && parseInt(numericValueNumerator, 16),
+				// numericValueDenominator: numericValueDenominator && parseInt(numericValueDenominator, 16),
+				// bidiMirrored: bidiMirrored === "Y",
+				// unicode1Name,
+				// isoComment,
+				// simpleUppercaseMapping,
+				// simpleLowercaseMapping,
+				// simpleTitlecaseMapping,
+			};
+		});
+		const pairs = [];
+		const notFound = [];
+		for (const characterDefinition of characterDefinitions) {
+			if (characterDefinition.name.includes("REVERSE")) {
+				let pair;
+				let withoutReversed = characterDefinition.name.replace(/(\s*)REVERSED?\s*/, "$1");
+				for (const otherDefinition of characterDefinitions) {
+					if (otherDefinition.name === withoutReversed) {
+						pair = [characterDefinition, otherDefinition];
+						break;
+					}
+				}
+				if (pair) {
+					pairs.push(pair);
+				} else {
+					notFound.push(characterDefinition);
+				}
+			}
+		}
+		// return { pairs, notFound };
+		// console.log("Found", pairs.length, "pairs of mirror characters:", Object.fromEntries(pairs.map((pair) => [pair[0].name, pair[1].name])));
+		console.log("Found", pairs.length, "pairs of mirror characters:", Object.fromEntries(pairs.map((pair) =>
+			pair.map(({ codePoint }) => String.fromCodePoint(codePoint))
+		)));
+		console.log("Didn't find matching pairs for:", notFound);
+	}
+
 	function detectMissingMirrors(searchGlyphs) {
 		if (typeof searchGlyphs === "string") {
 			searchGlyphs = splitter.splitGraphemes(searchGlyphs);
@@ -897,11 +1023,12 @@
 	flipText.parseText = parseText;
 	flipText.visualizeParse = visualizeParse;
 	flipText.blockifyText = blockifyText;
-	flipText.findNewMirrors = findNewMirrors;
+	flipText.searchForMirrorsWithVisualMatching = searchForMirrorsWithVisualMatching;
+	flipText.searchForMirrorsInUnicodeData = searchForMirrorsInUnicodeData;
 	flipText.detectMissingMirrors = detectMissingMirrors;
 
-	// console.log(findNewMirrors("AB{}[]()<>"));
-	// console.log(findNewMirrors("▀▁▂▃▄▅▆▇█▉▊▋▌▍▎▏▐░▒▓▔▕▖▗▘▙▚▛▜▝▞▟"));
+	// console.log(searchForMirrorsWithVisualMatching("AB{}[]()<>"));
+	// console.log(searchForMirrorsWithVisualMatching("▀▁▂▃▄▅▆▇█▉▊▋▌▍▎▏▐░▒▓▔▕▖▗▘▙▚▛▜▝▞▟"));
 	// const symbolsForLegacyComputing = `
 	// 	0	1	2	3	4	5	6	7	8	9	A	B	C	D	E	F
 	// 	U+1FB0x	🬀	🬁	🬂	🬃	🬄	🬅	🬆	🬇	🬈	🬉	🬊	🬋	🬌	🬍	🬎	🬏
@@ -930,9 +1057,9 @@
 	// 	U+25Ex	◠	◡	◢	◣	◤	◥	◦	◧	◨	◩	◪	◫	◬	◭	◮	◯
 	// 	U+25Fx	◰	◱	◲	◳	◴	◵	◶	◷	◸	◹	◺	◻	◼	◽	◾	◿
 	// `;
-	// findNewMirrors(symbolsForLegacyComputing);
+	// searchForMirrorsWithVisualMatching(symbolsForLegacyComputing);
 	// detectMissingMirrors(symbolsForLegacyComputing);
-	// findNewMirrors(geometricShapes);
+	// searchForMirrorsWithVisualMatching(geometricShapes);
 	// detectMissingMirrors(geometricShapes);
 	detectMissingMirrors("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789");
 
