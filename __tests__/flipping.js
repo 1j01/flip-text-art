@@ -10,9 +10,9 @@ it("should flip brackets", () => {
 	expect(flipText(">]})")).toBe("({[<");
 });
 
-it("should preserve spaces with trimSpaces = false", () => {
-	expect(flipText("   o", false, false, false)).toBe("o   ");
-	expect(flipText("o   ", false, false, false)).toBe("   o");
+it("should preserve spaces with trimLines = false", () => {
+	expect(flipText("   o", { trimLines: false })).toBe("o   ");
+	expect(flipText("o   ", { trimLines: false })).toBe("   o");
 });
 
 it("should flip Tinker Toys figlet font ASCII art", () => {
@@ -57,4 +57,46 @@ o   | |   | | |  | |  |     |     |   | | |  | | |-* | | |
               o
 `;
 	expect(flipText(input)).toBe(expected);
+});
+
+it("should preserve words with preserveWords = true", () => {
+	expect(flipText("hello world", { preserveWords: true })).toBe("hello world");
+	expect(flipText("<--this way---", { preserveWords: true })).toBe("---this way-->");
+	expect(flipText("<--ഈ വഴിയേ---", { preserveWords: true })).toBe("---ഈ വഴിയേ-->");
+	expect(flipText("<--這邊走--{", { preserveWords: true })).toBe("}--這邊走-->");
+});
+
+it("should mirror words with preserveWords = false", () => {
+	expect(flipText("Here is a test!", { preserveWords: false })).toBe("!ɈƨɘɈ ɒ ƨi ɘɿɘH");
+	expect(flipText("Do you like it?", { preserveWords: false })).toBe("⸮Ɉi ɘʞil υoγ oᗡ");
+});
+
+it("should mirror Unicode box drawing characters", () => {
+	expect(flipText(`
+┌─┬┐  ╔═╦╗  ╓─╥╖  ╒═╤╕
+│ ││  ║ ║║  ║ ║║  │ ││
+├─┼┤  ╠═╬╣  ╟─╫╢  ╞═╪╡
+└─┴┘  ╚═╩╝  ╙─╨╜  ╘═╧╛
+┌───────────────────┐
+│  ╔═══╗ Some Text  │▒
+│  ╚═╦═╝ in the box │▒
+╞═╤══╩══╤═══════════╡▒
+│ ├──┬──┤           │▒
+│ └──┴──┘           │▒
+└───────────────────┘▒
+ ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+`)).toBe(`
+╒╤═╕  ╓╥─╖  ╔╦═╗  ┌┬─┐
+││ │  ║║ ║  ║║ ║  ││ │
+╞╪═╡  ╟╫─╢  ╠╬═╣  ├┼─┤
+╘╧═╛  ╙╨─╜  ╚╩═╝  └┴─┘
+ ┌───────────────────┐
+▒│  Some Text ╔═══╗  │
+▒│ in the box ╚═╦═╝  │
+▒╞═══════════╤══╩══╤═╡
+▒│           ├──┬──┤ │
+▒│           └──┴──┘ │
+▒└───────────────────┘
+▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒
+`);
 });

@@ -140,7 +140,7 @@
 	}
 
 	const splitter = new GraphemeSplitter();
-	function flipText(text, asciiOnly = false, preserveWords = false, trimLines = true) {
+	function flipText(text, { asciiOnly = false, preserveWords = false, trimLines = true } = {}) {
 		const rows = parseText(text, { preserveWords });
 		const maxWidth = rows.reduce((acc, row) => Math.max(acc, row.width), 0);
 

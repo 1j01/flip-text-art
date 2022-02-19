@@ -9,7 +9,11 @@ const visualize = document.getElementById("visualize");
 let input, output;
 let overlays = [];
 function update() {
-	output.value = flipText(input.value, asciiOnly.checked, preserveWords.checked, trimLines.checked);
+	output.value = flipText(input.value, {
+		asciiOnly: asciiOnly.checked,
+		preserveWords: preserveWords.checked,
+		trimLines: trimLines.checked,
+	});
 	const inputLines = flipText.blockifyText(input.value).split(/\r?\n/);
 	const outputLines = output.value.split(/\r?\n/);
 	const joinedLines = [];
@@ -31,7 +35,9 @@ function update() {
 	// if it's re-parsing the output, rather than using a transformed structure of the input for the outputs.
 	// for (const textarea of [left, right, bottom]) {
 	for (const textarea of [input]) {
-		const overlay = flipText.visualizeParse(flipText.parseText(textarea.value, {preserveWords: preserveWords.checked}));
+		const overlay = flipText.visualizeParse(flipText.parseText(textarea.value, {
+			preserveWords: preserveWords.checked,
+		}));
 		overlay.classList.add("textarea-overlay");
 		textarea.parentNode.appendChild(overlay);
 		overlays.push(overlay);
