@@ -31,28 +31,28 @@
 
 	// Other spaces (en, em, hair, etc.) are often equal in a monospace font.
 	const space = "\u0020";
-	const ideographicSpace = "\u3000";
+	// const ideographicSpace = "\u3000";
 	const spaceWidth = measureText(space);
-	const ideographicSpaceWidth = measureText(ideographicSpace);
+	// const ideographicSpaceWidth = measureText(ideographicSpace);
 	function fitSpaces(targetWidth, asciiOnly = false) {
-		if (asciiOnly) {
-			return new Array(Math.round(targetWidth / spaceWidth) + 1).join(space);
-		}
-		const spaceCountMax = Math.ceil(targetWidth / spaceWidth);
-		const ideographicSpaceCountMax = Math.ceil(targetWidth / ideographicSpaceWidth);
-		let bestDifference = Infinity;
-		let bestString = "";
-		for (let spaceCount = 0; spaceCount <= spaceCountMax; spaceCount++) {
-			for (let ideographicSpaceCount = 0; ideographicSpaceCount <= ideographicSpaceCountMax; ideographicSpaceCount++) {
-				const width = spaceCount * spaceWidth + ideographicSpaceCount * ideographicSpaceWidth;
-				const difference = Math.abs(width - targetWidth);
-				if (difference < bestDifference) {
-					bestDifference = difference;
-					bestString = new Array(spaceCount + 1).join(space) + new Array(ideographicSpaceCount + 1).join(ideographicSpace);
-				}
-			}
-		}
-		return bestString;
+		// if (asciiOnly) {
+		return new Array(Math.round(targetWidth / spaceWidth) + 1).join(space);
+		// }
+		// const spaceCountMax = Math.ceil(targetWidth / spaceWidth);
+		// const ideographicSpaceCountMax = Math.ceil(targetWidth / ideographicSpaceWidth);
+		// let bestDifference = Infinity;
+		// let bestString = "";
+		// for (let spaceCount = 0; spaceCount <= spaceCountMax; spaceCount++) {
+		// 	for (let ideographicSpaceCount = 0; ideographicSpaceCount <= ideographicSpaceCountMax; ideographicSpaceCount++) {
+		// 		const width = spaceCount * spaceWidth + ideographicSpaceCount * ideographicSpaceWidth;
+		// 		const difference = Math.abs(width - targetWidth);
+		// 		if (difference < bestDifference) {
+		// 			bestDifference = difference;
+		// 			bestString = new Array(spaceCount + 1).join(space) + new Array(ideographicSpaceCount + 1).join(ideographicSpace);
+		// 		}
+		// 	}
+		// }
+		// return bestString;
 	}
 
 	// sort of lexical parsing, splitting lines then optionally splitting to alternating language and other text parts
