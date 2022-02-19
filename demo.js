@@ -31,7 +31,7 @@ function update() {
 	// if it's re-parsing the output, rather than using a transformed structure of the input for the outputs.
 	// for (const textarea of [left, right, bottom]) {
 	for (const textarea of [input]) {
-		const overlay = flipText.visualizeParse(flipText.parseText(textarea.value));
+		const overlay = flipText.visualizeParse(flipText.parseText(textarea.value, {preserveWords: preserveWords.checked}));
 		overlay.classList.add("textarea-overlay");
 		textarea.parentNode.appendChild(overlay);
 		overlays.push(overlay);
