@@ -61,21 +61,60 @@
 		const lines = text.split(/\r?\n/);
 		const rows = lines.map((line) => {
 			const width = splitter.splitGraphemes(line).map(measureText).reduce(sum, 0);
-			let parts = [line];
-			if (preserveWords) {
-				parts = line.match(/\p{Letter}+(\s+\p{Letter}+)*|\P{Letter}+/gu) ?? [];
+			const graphemes = splitter.splitGraphemes(line);
+			let parts = [];
+			let currentPart = { text: "", graphemes: [], isWords: false };
+			parts.push(currentPart);
+			for (let i = 0; i < graphemes.length; i++) {
+				if (preserveWords) {
+					// look for a whole word at once
+					let word = [], j = i;
+					for (; j < graphemes.length; j++) {
+						if (/\p{Letter}/u.test(graphemes[j])) {
+							word.push(graphemes[j]);
+						} else {
+							break;
+						}
+					}
+					// heuristic: filter out single letters but not "I", "a", or Chinese characters etc.
+					if (word && word.length > 1 || word.join("").match(/[IAa]|[^A-Za-z]/)) {
+						if (!currentPart.isWords) {
+							// start a new part
+							currentPart = { text: "", graphemes: [], isWords: true };
+							parts.push(currentPart);
+						}
+						currentPart.text += word.join("");
+						currentPart.graphemes.push(...word);
+						i = j - 1;
+						continue;
+					}
+				}
+				if (currentPart.isWords) {
+					// start a new part
+					currentPart = { text: "", graphemes: [], isWords: false };
+					parts.push(currentPart);
+				}
+				currentPart.text += graphemes[i];
+				currentPart.graphemes.push(graphemes[i]);
 			}
-			parts = parts.map((text) => {
-				const part = {
-					text,
-					graphemes: splitter.splitGraphemes(text),
-					isWords: /^\p{Letter}+(\s+\p{Letter}+)*$/u.test(text)
-				};
-				// if (part.graphemes.length < 2) {
-				// 	part.isWords = false;
-				// }
-				return part;
-			});
+			// join adjacent words as parts
+			if (preserveWords) {
+				const newParts = [];
+				for (let i = 0; i < parts.length; i++) {
+					// the word parts are not themselves adjacent, there's a space between them
+					if (parts[i].isWords && parts[i + 2]?.isWords && parts[i + 1]?.text.trim() === "") {
+						newParts.push({
+							text: parts[i].text + parts[i + 1].text + parts[i + 2].text,
+							graphemes: [...parts[i].graphemes, ...parts[i + 1].graphemes, ...parts[i + 2].graphemes],
+							isWords: true,
+						});
+						i += 2;
+					} else {
+						newParts.push(parts[i]);
+					}
+				}
+				parts = newParts;
+			}
 			return { width, parts };
 		});
 		return rows;
