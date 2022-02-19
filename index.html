@@ -13,7 +13,7 @@
 <body>
 	<h1>Flip Text Art</h1>
 	<div id="input-output">
-		<textarea id="left">
+		<div class="textarea-wrapper"><textarea id="left">
                            _
                           _)\.-.
          .-.__,___,_.-=-. )\`  a`\_
@@ -35,6 +35,14 @@
 jgs    \'-'/(   _  `\,;        \ '--:,
         `"`  `"` `-,,;         `"`",,;
 
+ o-o               o        o--o          o    o
+o                  |        |   |         |    |
+|  -o o-o  oo o-o  O--o     O--o  o-o o-o O-o  | o-o o-O-o
+o   | |   | | |  | |  |     |     |   | | |  | | |-* | | |
+ o-o  o   o-o-O-o  o  o     o     o   o-o o-o  o o-o o o o
+              |
+              o
+
 ┌─┬┐  ╔═╦╗  ╓─╥╖  ╒═╤╕
 │ ││  ║ ║║  ║ ║║  │ ││
 ├─┼┤  ╠═╬╣  ╟─╫╢  ╞═╪╡
@@ -55,14 +63,14 @@ jgs    \'-'/(   _  `\,;        \ '--:,
  │ ├──┬──┤ キャラクター│▒
  │ └──┴──┘ 🍙　弁当 🍱│▒
  └───────────────────┘▒
-  ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒</textarea>
+  ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒</textarea></div>
 		<div id="arrow-container">
 			<div id="arrow-left">⤺</div>
 			<div id="arrow-right">⤻</div>
 		</div>
-		<textarea id="right"></textarea>
+		<div class="textarea-wrapper"><textarea id="right"></textarea></div>
 	</div>
-	<textarea id="bottom" readonly></textarea>
+	<div class="textarea-wrapper"><textarea id="bottom" readonly></textarea></div>
 	<div id="options">
 		<label>
 			<input type="checkbox" id="ascii-only">

@@ -23,8 +23,41 @@ h1 {
 	flex: 1;
 }
 
-#input-output textarea,
-#bottom {
+.textarea-wrapper {
+	flex: 1;
+	align-self: stretch;
+	display: flex;
+	position: relative;
+}
+
+.textarea-overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: rgba(0, 0, 0, 0.5);
+	pointer-events: none;
+	overflow: hidden;
+	/* color: transparent; */
+}
+
+.textarea-overlay,
+.textarea-wrapper textarea {
+	font-family: monospace;
+	font-size: 14px;
+	padding: 10px;
+	--line-height: 1.1em;
+	line-height: var(--line-height);
+}
+
+.textarea-overlay pre {
+	margin: 0;
+	font: inherit;
+	min-height: var(--line-height);
+}
+
+.textarea-wrapper textarea {
 	flex: 1;
 	min-height: 200px;
 	white-space: pre;

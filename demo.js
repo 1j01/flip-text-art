@@ -1,4 +1,4 @@
-/* global flipText, blockifyText */
+/* global flipText */
 const left = document.getElementById("left");
 const right = document.getElementById("right");
 const bottom = document.getElementById("bottom");
@@ -6,9 +6,10 @@ const asciiOnly = document.getElementById("ascii-only");
 const preserveWords = document.getElementById("preserve-words");
 const trimLines = document.getElementById("trim-lines");
 let input, output;
+let overlays = [];
 function update() {
 	output.value = flipText(input.value, asciiOnly.checked, preserveWords.checked, trimLines.checked);
-	const inputLines = blockifyText(input.value).split(/\r?\n/);
+	const inputLines = flipText.blockifyText(input.value).split(/\r?\n/);
 	const outputLines = output.value.split(/\r?\n/);
 	const joinedLines = [];
 	for (let i = 0; i < Math.max(inputLines.length, outputLines.length); i++) {
@@ -17,6 +18,19 @@ function update() {
 		joinedLines.push(inputLine + "  " + outputLine);
 	}
 	bottom.value = joinedLines.join("\n");
+	for (const overlay of overlays) {
+		overlay.remove();
+	}
+	overlays = [];
+	// Showing overlays for all textareas might be confusing,
+	// if it's re-parsing the output, rather than using a transformed structure of the input for the outputs.
+	// for (const textarea of [left, right, bottom]) {
+	for (const textarea of [input]) {
+		const overlay = flipText.visualizeParse(flipText.parseText(textarea.value));
+		overlay.classList.add("textarea-overlay");
+		textarea.parentNode.appendChild(overlay);
+		overlays.push(overlay);
+	}
 }
 left.oninput = function () {
 	input = left;

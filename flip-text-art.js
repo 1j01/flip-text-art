@@ -65,17 +65,43 @@
 			if (preserveWords) {
 				parts = line.match(/\p{Letter}+(\s+\p{Letter}+)*|\P{Letter}+/gu) ?? [];
 			}
-			parts = parts.map((part) => {
-				return {
-					text: part,
-					graphemes: splitter.splitGraphemes(part),
-					isWords: /^\p{Letter}+(\s+\p{Letter}+)*$/u.test(part),
+			parts = parts.map((text) => {
+				const part = {
+					text,
+					graphemes: splitter.splitGraphemes(text),
+					isWords: /^\p{Letter}+(\s+\p{Letter}+)*$/u.test(text)
 				};
+				// if (part.graphemes.length < 2) {
+				// 	part.isWords = false;
+				// }
+				return part;
 			});
 			return { width, parts };
 		});
 		return rows;
 	};
+
+	function visualizeParse(rows) {
+		const container = document.createElement("div");
+		for (const row of rows) {
+			const rowElement = document.createElement("pre");
+			let even = true;
+			for (const part of row.parts) {
+				const partElement = document.createElement("span");
+				partElement.textContent = part.text;
+				if (part.isWords) {
+					partElement.style.fontWeight = "bold";
+				}
+				if (even) {
+					partElement.style.backgroundColor = "rgba(0, 0, 0, 0.1)";
+				}
+				even = !even;
+				rowElement.appendChild(partElement);
+			}
+			container.appendChild(rowElement);
+		}
+		return container;
+	}
 
 	const splitter = new GraphemeSplitter();
 	function flipText(text, asciiOnly = false, preserveWords = false, trimLines = true) {
@@ -829,9 +855,11 @@
 	}
 
 	window.flipText = flipText;
-	window.blockifyText = blockifyText;
-	window.findNewMirrors = findNewMirrors;
-	window.detectMissingMirrors = detectMissingMirrors;
+	flipText.parseText = parseText;
+	flipText.visualizeParse = visualizeParse;
+	flipText.blockifyText = blockifyText;
+	flipText.findNewMirrors = findNewMirrors;
+	flipText.detectMissingMirrors = detectMissingMirrors;
 
 	// console.log(findNewMirrors("AB{}[]()<>"));
 	// console.log(findNewMirrors("▀▁▂▃▄▅▆▇█▉▊▋▌▍▎▏▐░▒▓▔▕▖▗▘▙▚▛▜▝▞▟"));
