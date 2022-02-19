@@ -540,10 +540,8 @@
 		"a": "ɒ", // or ઠ or ₆ or 6
 		"ɒ": "ɑ", // or a
 		"ɑ": "ɒ",
-		"b": "d",
 		"c": "ɔ",
 		"ɔ": "c",
-		"d": "b",
 		"e": "ɘ",
 		"ɘ": "e",
 		"f": "ʇ",
@@ -606,7 +604,6 @@
 		"კ": "&",
 		"𐒈": "&",
 		"Ֆ": "&",
-		"\\": "/",
 		"ɜ": "ɛ",
 		"ɞ": "ʚ",
 		// "ɿ": "ɾ",
@@ -809,14 +806,14 @@
 		"\t",
 		" ",
 	];
+	const acceptedOneWayFlips = [
+		"Q", "a", "Ֆ", "𐒈", "₰", "y"
+	];
+
 	const duplicatesInSymmetricalGlyphs = findDuplicates(symmetricalGlyphs);
 	if (duplicatesInSymmetricalGlyphs.length > 0) {
 		console.log("Duplicates in symmetricalGlyphs:", duplicatesInSymmetricalGlyphs);
 	}
-
-	const acceptedOneWayFlips = [
-		"Q", "a", "Ֆ", "𐒈", "₰", "y"
-	];
 	const duplicatesInAcceptedOneWayFlips = findDuplicates(acceptedOneWayFlips);
 	if (duplicatesInAcceptedOneWayFlips.length > 0) {
 		console.log("Duplicates in acceptedOneWayFlips:", duplicatesInAcceptedOneWayFlips);
@@ -873,6 +870,16 @@
 	}
 	if (unapplicableMappings.length > 0) {
 		console.log("There are mappings that won't apply because the text won't be split at that boundary:", unapplicableMappings);
+	}
+	// detect redundant mappings that are same between ASCII and Unicode
+	const redundantMappings = [];
+	for (const grapheme of allKeys) {
+		if (asciiMirrorCharacters[grapheme] === unicodeMirrorCharacters[grapheme]) {
+			redundantMappings.push(grapheme);
+		}
+	}
+	if (redundantMappings.length > 0) {
+		console.log("There are redundant mappings that are same between ASCII and Unicode:", redundantMappings);
 	}
 
 	function flipGrapheme(grapheme, asciiOnly) {
