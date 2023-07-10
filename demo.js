@@ -6,6 +6,7 @@ const asciiOnly = document.getElementById("ascii-only");
 const preserveWords = document.getElementById("preserve-words");
 const trimLines = document.getElementById("trim-lines");
 const visualize = document.getElementById("visualize");
+const syncScroll = document.getElementById("sync-scroll");
 let input, output;
 let overlays = [];
 function update() {
@@ -28,6 +29,34 @@ function update() {
 		overlay.remove();
 	}
 	overlays = [];
+	let isProgrammaticScroll = false;
+	for (const textarea of [left, right]) {
+		if (textarea._cleanupScrollSync) {
+			textarea._cleanupScrollSync();
+		}
+		if (syncScroll.checked) {
+			const onScroll = (e) => {
+				// console.log(textarea.id, e, e?.isTrusted, isProgrammaticScroll);
+				if (isProgrammaticScroll) {
+					return;
+				}
+				const other = textarea === left ? right : left;
+				isProgrammaticScroll = true;
+				other.scrollTop = textarea.scrollTop;
+				// other.scrollLeft = textarea.scrollLeft;
+				// mirror scroll position
+				other.scrollLeft = textarea.scrollWidth - textarea.clientWidth - textarea.scrollLeft;
+				setTimeout(() => {
+					isProgrammaticScroll = false;
+				}, 0);
+			};
+			textarea.addEventListener("scroll", onScroll);
+			onScroll();
+			textarea._cleanupScrollSync = () => {
+				textarea.removeEventListener("scroll", onScroll);
+			};
+		}
+	}
 	if (!visualize.checked) {
 		return;
 	}
@@ -65,6 +94,7 @@ right.oninput = function () {
 asciiOnly.onchange = update;
 preserveWords.onchange = update;
 visualize.onchange = update;
+syncScroll.onchange = update;
 let tid;
 trimLines.onchange = function () {
 	clearTimeout(tid);
