@@ -35,9 +35,12 @@ function update() {
 			textarea._cleanupScrollSync();
 		}
 		if (syncScroll.checked) {
-			const onScroll = (e) => {
-				// console.log(textarea.id, e, e?.isTrusted, isProgrammaticScroll);
+			const onScroll = () => {
+				// console.log(textarea.id, event, event?.isTrusted, isProgrammaticScroll);
 				if (isProgrammaticScroll) {
+					// This solution assumes only two linked textareas.
+					// For more it would need to count down the number of expected scroll events.
+					isProgrammaticScroll = false;
 					return;
 				}
 				const other = textarea === left ? right : left;
@@ -46,9 +49,11 @@ function update() {
 				// other.scrollLeft = textarea.scrollLeft;
 				// mirror scroll position
 				other.scrollLeft = textarea.scrollWidth - textarea.clientWidth - textarea.scrollLeft;
-				setTimeout(() => {
-					isProgrammaticScroll = false;
-				}, 0);
+				// setTimeout is unreliable as a way to wait for the next scroll event.
+				// It seems to work in Chrome, but then not in VS Code's live preview.
+				// setTimeout(() => {
+				// 	isProgrammaticScroll = false;
+				// }, 0);
 			};
 			textarea.addEventListener("scroll", onScroll);
 			onScroll();
