@@ -517,8 +517,8 @@
 		"◵": "◶",
 		"◶": "◵",
 		"◷": "◴",
-		"⏢": "▱", // (dubious) or ▭ (symmetricalize)
-		"▱": "⏢", // (dubious) or ▭ (symmetricalize)
+		"⏢": "▱", // (dubious) or ▭ (symmetrize)
+		"▱": "⏢", // (dubious) or ▭ (symmetrize)
 		"?": "⸮",
 		"⸮": "?",
 		"1": "Ɩ",
@@ -548,7 +548,7 @@
 		"ʇ": "f",
 		"g": "ϱ",
 		"ϱ": "g",
-		"h": "⑁", // or ᖽ or ᖹ or Ꮧ or H
+		"h": "⑁", // or ᖽ or ᖹ or Ꮧ or H (symmetrize)
 		"⑁": "h",
 		"j": "ᒑ", // or į or ᒫ or ⇂ or ᢺ
 		"ᒑ": "j",
@@ -563,7 +563,7 @@
 		"u": "υ",
 		"υ": "u",
 		"y": "γ",
-		"B": "ઘ", // or Ƌ or 8 or 𐌇
+		"B": "ઘ", // or Ƌ or 8 (symmetrize) or 𐌇 (symmetrize)
 		"ઘ": "B",
 		"C": "Ɔ",
 		"Ɔ": "C",
@@ -591,7 +591,7 @@
 		"Я": "R",
 		"S": "Ƨ", // or Ꙅ
 		"Ƨ": "S",
-		"Z": "\u29f5\u0304\u0332", // or "\u29f5\u0305\u0332" or ⦣̅ or 5 or or \ or ⋝ or Ƹ or ⧖/ⴵ or Σ or ﭶ or ﳎ or צּ or ﮑ/ﻜ or ݎ or ܠ̅ (note: some of those are RTL)
+		"Z": "\u29f5\u0304\u0332", // or "\u29f5\u0305\u0332" or ⦣̅ or 5 or or \ or ⋝ or Ƹ or ⧖/ⴵ (symmetrize) or Σ or ﭶ or ﳎ or צּ or ﮑ/ﻜ or ݎ or ܠ̅ (note: some of those are RTL)
 		"\u29f5\u0304\u0332": "Z",
 		"z": "⦣̅",
 		"⦣̅": "z",
@@ -1336,7 +1336,7 @@
 		"〗": "〖",
 		"〙": "〘",
 		"〛": "〚",
-		"㊨": "㊧",
+		"㊨": "㊧", // cheeky (semantic)... should probably be removed
 		"꧂": "꧁",
 		"꭫": "꭪",
 		"﴿": "﴾",
