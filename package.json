@@ -5,7 +5,7 @@
   "main": "flip-text-art.js",
   "scripts": {
     "test": "jest",
-    "lint": "eslint *.js",
+    "lint": "cspell-cli lint . && eslint *.js",
     "start": "live-server --port=8008"
   },
   "jest": {
@@ -33,6 +33,7 @@
   "homepage": "https://github.com/1j01/flip-text-art#readme",
   "devDependencies": {
     "canvas": "^2.9.0",
+    "cspell-cli": "^8.3.0",
     "eslint": "^8.9.0",
     "jest": "^27.5.1",
     "live-server": "^1.2.1"

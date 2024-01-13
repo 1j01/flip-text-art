@@ -107,7 +107,9 @@ npm start
 
 ### Quality Assurance
 
-Tests are written with [Jest](https://jestjs.io/), and code is kept consistent with [ESLint](https://eslint.org/).
+Tests are written with [Jest](https://jestjs.io/).
+Code is kept consistent with [ESLint](https://eslint.org/), and spelling is checked with [cspell](https://cspell.org/),
+both of which are included in the `lint` script.
 
 ```sh
 npm test

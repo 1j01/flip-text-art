@@ -1,0 +1,28 @@
+{
+	"files": [
+		"**",
+		".*/**"
+	],
+	"ignorePaths": [
+		".git",
+		"*.(bmp|png|jpg|jpeg|gif|svg|ico|tiff|tif|ans|flf)",
+		"*.log",
+		"unicode",
+		"node_modules",
+		"grapheme-splitter.js"
+	],
+	"words": [
+		"blockify",
+		"blɿow",
+		"ɘʞil",
+		"figlet",
+		"monospace",
+		"Odhner",
+		"ollɘH",
+		"rgba",
+		"textareas",
+		"Titlecase",
+		"uniquify",
+		"വഴിയേ"
+	]
+}
