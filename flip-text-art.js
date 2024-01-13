@@ -466,13 +466,13 @@
 		"🮈": "▍",
 		"▎": "🮇",
 		"🮇": "▎",
-		// "🯲": "🯵",
-		// "🯵": "🯲",
-		// "🯁🯂🯃": "👈 ",
+		// "🯲": "🯵", // weird to interfere with semantics of seven-segment displays without reversing all digits
+		// "🯵": "🯲", // (although these are perfect mirrors)
 		"👈": "👉",
 		"👉": "👈",
-		// "🮲🮳": "🏃",
-		// "🏃": "🮲🮳",
+		// "🯁🯂🯃": "👈 ", // one-way mapping of three characters to one usually-two-wide emoji plus a space? dubious
+		// "🮲🮳": "🏃", // two-way mapping of two characters to one usually-two-wide emoji? less dubious...
+		// "🏃": "🮲🮳", // but the display is very different, given emoji are usually colored and not stick figures
 		"🯇": "🯈",
 		"🯈": "🯇",
 		"◂": "▸",
