@@ -83,6 +83,36 @@ Loads Unicode data from a text file, and searches for mirror pairs based on thei
 
 Detects characters that do not have a mirror mapping, within the given text, or list of graphemes.
 
+## Development
+
+If you want to contribute, or run the web app locally, here's how to get started.
+
+### Setup
+
+You'll need [Node.js](https://nodejs.org/) installed.
+
+```sh
+git clone https://github.com/1j01/flip-text-art.git
+cd flip-text-art
+npm install
+```
+
+### Running
+
+This will start a live-reloading development server, and open up the web app in your browser:
+
+```sh
+npm start
+```
+
+### Quality Assurance
+
+Tests are written with [Jest](https://jestjs.io/), and code is kept consistent with [ESLint](https://eslint.org/).
+
+```sh
+npm test
+npm run lint
+```
 
 ## License
 
