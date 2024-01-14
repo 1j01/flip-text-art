@@ -1,41 +1,43 @@
 {
-  "name": "flip-text-art",
-  "version": "1.0.0",
-  "description": "Mirror ASCII art and such",
-  "main": "flip-text-art.js",
-  "scripts": {
-    "test": "jest",
-    "lint": "cspell-cli lint . && eslint --config .eslintrc.js .",
-    "start": "live-server --port=8008"
-  },
-  "jest": {
-    "testPathIgnorePatterns": [".history"],
-    "testEnvironment": "jsdom"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/1j01/flip-text-art.git"
-  },
-  "keywords": [
-    "ascii-art",
-    "unicode-art",
-    "text-art",
-    "text",
-    "flip",
-    "mirror",
-    "reverse"
-  ],
-  "author": "Isaiah Odhner",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/1j01/flip-text-art/issues"
-  },
-  "homepage": "https://github.com/1j01/flip-text-art#readme",
-  "devDependencies": {
-    "canvas": "^2.9.0",
-    "cspell-cli": "^8.3.0",
-    "eslint": "^8.9.0",
-    "jest": "^27.5.1",
-    "live-server": "^1.2.1"
-  }
+	"name": "flip-text-art",
+	"version": "1.0.0",
+	"description": "Mirror ASCII art and such",
+	"main": "flip-text-art.js",
+	"scripts": {
+		"test": "jest",
+		"lint": "cspell-cli lint . && eslint --config .eslintrc.js .",
+		"start": "live-server --port=8008"
+	},
+	"jest": {
+		"testPathIgnorePatterns": [
+			".history"
+		],
+		"testEnvironment": "jsdom"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/1j01/flip-text-art.git"
+	},
+	"keywords": [
+		"ascii-art",
+		"unicode-art",
+		"text-art",
+		"text",
+		"flip",
+		"mirror",
+		"reverse"
+	],
+	"author": "Isaiah Odhner",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/1j01/flip-text-art/issues"
+	},
+	"homepage": "https://github.com/1j01/flip-text-art#readme",
+	"devDependencies": {
+		"canvas": "^2.9.0",
+		"cspell-cli": "^8.3.0",
+		"eslint": "^8.9.0",
+		"jest": "^27.5.1",
+		"live-server": "^1.2.1"
+	}
 }

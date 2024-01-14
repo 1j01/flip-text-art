@@ -1,19 +1,19 @@
 {
-    "editor.insertSpaces": false,
-    "editor.detectIndentation": false,
+	"editor.insertSpaces": false,
+	"editor.detectIndentation": false,
 	"editor.formatOnSave": true,
 	// npm respects indentation settings, but always inserts a final newline.
 	// This avoids ping-ponging between having it or not when editing package.json manually or using the CLI.
 	"files.insertFinalNewline": true,
-    // Prevent accidental editing of generated files and installed packages.
-    // (You can always use File: Set Active Editor Writeable in Session if you need to.)
-    "files.readonlyInclude": {
-        "**/unicode/**": true,
+	// Prevent accidental editing of generated files and installed packages.
+	// (You can always use File: Set Active Editor Writeable in Session if you need to.)
+	"files.readonlyInclude": {
+		"**/unicode/**": true,
 		// Script tag dependencies
 		// (If any patches are needed, it should be documented how to get the patched version.)
-        "grapheme-splitter.js": true,
-        // Node.js
-        "node_modules/**": true,
-        "package-lock.json": true,
-    }
+		"grapheme-splitter.js": true,
+		// Node.js
+		"node_modules/**": true,
+		"package-lock.json": true,
+	}
 }

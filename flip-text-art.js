@@ -1780,7 +1780,7 @@
 			pair.map(({ codePoint }) => String.fromCodePoint(codePoint)).join(" ↔ ") + "\n" +
 			pair.map(({ codePoint, name }) => `${String.fromCodePoint(codePoint)} (${name})`).join("\n")
 		)).join("\n\n"));
-		
+
 		console.log("Didn't find matching pairs for:", notFound);
 	}
 
