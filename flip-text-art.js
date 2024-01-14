@@ -1674,6 +1674,10 @@
 					console.log("Already a known mirror, skipping:", glyph1, glyph2);
 					continue;
 				}
+				if (unicodeMirrorCharacters[glyph1] || asciiMirrorCharacters[glyph2]) {
+					console.log("Already has some mirrors, skipping:", glyph1, glyph2);
+					continue;
+				}
 
 				ctx.clearRect(0, 0, canvas.width, canvas.height);
 				ctx.fillText(glyph1, 0, 0);
