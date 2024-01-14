@@ -175,6 +175,7 @@
 		}).join("\n");
 	}
 
+	// #region data
 	const asciiMirrorCharacters = {
 		"[": "]",
 		"]": "[",
@@ -1563,7 +1564,9 @@
 	const acceptedOneWayFlips = [
 		"Q", "a", "Ֆ", "𐒈", "₰", "y", "ↄ", "Ɜ", "𝼃"
 	];
+	// #endregion
 
+	// #region sanity checks
 	const duplicatesInSymmetricalGlyphs = findDuplicates(symmetricalGlyphs);
 	if (duplicatesInSymmetricalGlyphs.length > 0) {
 		console.log("Duplicates in symmetricalGlyphs:", duplicatesInSymmetricalGlyphs);
@@ -1637,6 +1640,8 @@
 		console.log("There are redundant mappings that are same between ASCII and Unicode:", redundantMappings);
 	}
 
+	// #endregion
+
 	function flipGrapheme(grapheme, asciiOnly) {
 		if (grapheme in unicodeMirrorCharacters && !asciiOnly) {
 			return unicodeMirrorCharacters[grapheme];
@@ -1646,6 +1651,8 @@
 			return grapheme;
 		}
 	}
+
+	// #region mirror search
 
 	// TODO: use shape contexts as attributes for a weighted bipartite matching problem
 	function searchForMirrorsWithVisualMatching(searchGlyphs) {
@@ -1788,6 +1795,8 @@
 		console.log("Didn't find matching pairs for:", notFound);
 	}
 
+	// (TODO: This is more of a sanity check, maybe should move into other code region.)
+	// (Or, shouldn't sanity checks be in the tests?)
 	function detectMissingMirrors(searchGlyphs) {
 		if (typeof searchGlyphs === "string") {
 			searchGlyphs = splitter.splitGraphemes(searchGlyphs);
@@ -1810,6 +1819,8 @@
 		}
 		// return missingMirrors;
 	}
+
+	// #endregion
 
 	window.flipText = flipText;
 	flipText.parseText = parseText;
