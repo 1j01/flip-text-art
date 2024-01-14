@@ -875,9 +875,6 @@
 		"⤶": "⤷",
 		"⥀": "⥁",
 		"⥆": "⥅",
-		// "⥌": "⥏", // nope
-		// "⥍": "⥏",
-		// "⥑": "⥏",
 		"⥒": "⥓",
 		"⥖": "⥗",
 		"⥘": "⥔",
@@ -1017,16 +1014,6 @@
 		// "︩": "︪",
 		// "︫": "︬",
 		// "︮": "︯",
-		// these are not horizontal mirrors
-		// "︵": "︶",
-		// "︷": "︸",
-		// "︹": "︺",
-		// "︻": "︼",
-		// "︽": "︾",
-		// "︿": "﹀",
-		// "﹁": "﹂",
-		// "﹃": "﹄",
-		// "﹇": "﹈",
 		"﹙": "﹚",
 		"﹛": "﹜",
 		"﹝": "﹞",
@@ -1034,7 +1021,6 @@
 		"［": "］",
 		"｛": "｝",
 		"｟": "｠",
-		// "｢": "｣", // matching but not mirroring
 		"￩": "￫",
 		"𐡷": "𐡸",
 		"𛱰": "𛱲",
@@ -1053,7 +1039,6 @@
 		"𝄆": "𝄇",
 		"𝅊": "𝅌",
 		"𝅋": "𝅍",
-		// "🔄": "🔃", // nope
 		"🔍": "🔎",
 		"🕃": "🕄",
 		"🕻": "🕽",
@@ -1102,9 +1087,6 @@
 		"🤜": "🤛",
 		"🫱": "🫲",
 		"🫲": "🫱",
-		// "🮲": "🮳", // not mirrors
-		// "🮹": "🮺",
-		// "🯁": "🯃",
 		// can't see these (invisible?)
 		// "󠀨": "󠀩",
 		// "󠁛": "󠁝",
@@ -1559,6 +1541,20 @@
 		"🯊",
 		"🯰",
 		"🯸",
+		"︵",
+		"︶",
+		"︷",
+		"︸",
+		"︹",
+		"︺",
+		"︻",
+		"︼",
+		"︽",
+		"︾",
+		"︿",
+		"﹀",
+		"﹇",
+		"﹈",
 		"\n",
 		"\r",
 		"\t",
@@ -1567,6 +1563,26 @@
 	const acceptedOneWayFlips = [
 		"Q", "a", "Ֆ", "𐒈", "₰", "y", "ↄ", "Ɜ", "𝼃"
 	];
+	// When searching for new mirrors, these will be excluded,
+	// as they've already been considered and rejected.
+	// Preferentially, characters should be put into symmetricalGlyphs,
+	// to indicate no mirroring is needed, which can also narrow the search.
+	const nonMirrors = {
+		"⥌": "⥏",
+		"⥍": "⥏",
+		"⥑": "⥏",
+		// matching pairs but not mirrors
+		"｢": "｣",
+		"﹁": "﹂",
+		"﹂": "﹁",
+		"﹃": "﹄",
+		"﹄": "﹃",
+		// Unicode names cause false positives
+		"🔄": "🔃",
+		"🮲": "🮳",
+		"🮹": "🮺",
+		"🯁": "🯃",
+	};
 	// #endregion
 
 	// #region sanity checks
@@ -1688,6 +1704,14 @@
 					console.log("Already has some mirrors, skipping:", glyph1, glyph2);
 					continue;
 				}
+				if (symmetricalGlyphs.includes(glyph1) || symmetricalGlyphs.includes(glyph2)) {
+					console.log("One or both are self-symmetrical, skipping:", glyph1, glyph2);
+					continue;
+				}
+				if (nonMirrors[glyph1] === glyph2 || nonMirrors[glyph2] === glyph1) {
+					console.log("Already rejected, skipping:", glyph1, glyph2);
+					continue;
+				}
 
 				ctx.clearRect(0, 0, canvas.width, canvas.height);
 				ctx.fillText(glyph1, 0, 0);
@@ -1793,8 +1817,21 @@
 				}
 			}
 			if (pair) {
+				if (pair[0].codePoint === pair[1].codePoint) {
+					console.warn("Same code point for pair:", pair);
+					continue;
+				}
+				if (symmetricalGlyphs.includes(String.fromCodePoint(pair[0].codePoint)) || symmetricalGlyphs.includes(String.fromCodePoint(pair[1].codePoint))) {
+					console.log("One or both are self-symmetrical, skipping:", pair);
+					continue;
+				}
+				if (nonMirrors[String.fromCodePoint(pair[0].codePoint)] === String.fromCodePoint(pair[1].codePoint) || nonMirrors[String.fromCodePoint(pair[1].codePoint)] === String.fromCodePoint(pair[0].codePoint)) {
+					console.log("Already rejected, skipping:", pair);
+					continue;
+				}
 				pairs.push(pair);
 			} else {
+				// TODO: shouldn't `notFound` include cases where `continue` is used above?
 				notFound.push(characterDefinition);
 			}
 		}
