@@ -1752,15 +1752,26 @@
 				continue;
 			}
 			let oppositeName;
-			if (characterDefinition.name.includes("REVERSE")) {
-				oppositeName = characterDefinition.name.replace(/(\s*)REVERSED?\s*/, "$1");
-				// TODO: combine with other replacements,
-				// e.g. for ⭁ U+2B41 REVERSE TILDE OPERATOR ABOVE LEFTWARDS ARROW
-			} else if (characterDefinition.name.match(/LEFT|RIGHT|CLOCKWISE/)) {
+			if (characterDefinition.name.match(/LEFT|RIGHT|CLOCKWISE|REVERSED?/)) {
 				// replacements are combined here, to get matches for e.g.
+				// ⤸⤹
 				// 2938;RIGHT-SIDE ARC CLOCKWISE ARROW;Sm;0;ON;;;;;N;;;;;
 				// 2939;LEFT-SIDE ARC ANTICLOCKWISE ARROW;Sm;0;ON;;;;;N;;;;;
-				oppositeName = characterDefinition.name.replace(/LEFT|RIGHT|(?:ANTI)?CLOCKWISE/g, (match) => {
+				// ⭁⥲
+				// 2B41;REVERSE TILDE OPERATOR ABOVE LEFTWARDS ARROW;Sm;0;ON;;;;;N;;;;;
+				// 2972;TILDE OPERATOR ABOVE RIGHTWARDS ARROW;Sm;0;ON;;;;;N;;;;;
+
+				oppositeName = characterDefinition.name.replace(/LEFT|RIGHT|(?:ANTI)?CLOCKWISE|(\s*)REVERSED?(\s*)/g, (match, wsBefore, wsAfter) => {
+					if (match.includes("REVERSE")) {
+						if (wsBefore === " " && wsAfter === " ") {
+							// Collapse spaces to one space
+							return " ";
+						} else {
+							// Remove space if "REVERSED" appears at the start (or end) of the name
+							// (An alternative to this logic would be to return a space and trim later.)
+							return "";
+						}
+					}
 					return {
 						"LEFT": "RIGHT",
 						"RIGHT": "LEFT",
