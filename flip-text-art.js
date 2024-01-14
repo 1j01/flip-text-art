@@ -17,9 +17,6 @@
 	function uniquify(array) {
 		return Array.from(new Set(array));
 	}
-	function findDuplicates(array) {
-		return array.filter((value, index, self) => self.indexOf(value) !== index);
-	}
 
 	const measuringCanvas = document.createElement("canvas");
 	const measuringContext = measuringCanvas.getContext("2d");
@@ -1585,82 +1582,6 @@
 	};
 	// #endregion
 
-	// #region sanity checks
-	const duplicatesInSymmetricalGlyphs = findDuplicates(symmetricalGlyphs);
-	if (duplicatesInSymmetricalGlyphs.length > 0) {
-		console.log("Duplicates in symmetricalGlyphs:", duplicatesInSymmetricalGlyphs);
-	}
-	const duplicatesInAcceptedOneWayFlips = findDuplicates(acceptedOneWayFlips);
-	if (duplicatesInAcceptedOneWayFlips.length > 0) {
-		console.log("Duplicates in acceptedOneWayFlips:", duplicatesInAcceptedOneWayFlips);
-	}
-	// detect one-way flips
-	const allKeys = uniquify(Object.keys(asciiMirrorCharacters).concat(Object.keys(unicodeMirrorCharacters)));
-	const unacceptedOneWayFlips = [];
-	for (const key of allKeys) {
-		if (flipGrapheme(flipGrapheme(key)) !== key && !acceptedOneWayFlips.includes(key)) {
-			const result = [key, flipGrapheme(key)];
-			if (flipGrapheme(flipGrapheme(key)) !== flipGrapheme(key)) {
-				result.push(flipGrapheme(flipGrapheme(key)));
-			}
-			unacceptedOneWayFlips.push(result);
-		}
-	}
-	if (unacceptedOneWayFlips.length > 0) {
-		console.log("There are one-way flips that have not been accepted:", unacceptedOneWayFlips.map((array) =>
-			array.join(" ⟶ ")
-		));
-		console.groupCollapsed("To accept");
-		console.log("Add these to acceptedOneWayFlips:", unacceptedOneWayFlips.map((array) => array[0]));
-		console.groupEnd();
-		console.groupCollapsed("To add as mirrors");
-		console.log("Add these to unicodeMirrorCharacters:", JSON.stringify(
-			Object.fromEntries(
-				unacceptedOneWayFlips.map((array) => [array[1], array[0]])
-			),
-			null, "\t"
-		));
-		console.log("Note that some may be already in unicodeMirrorCharacters. You should use `npm run lint` to check for duplicate keys.");
-		console.groupEnd();
-	}
-	// detect accepted one-way flips that are not one-way (keeping the acceptance list sensible)
-	const acceptedOneWayFlipsNotOneWay = [];
-	for (const accepted of acceptedOneWayFlips) {
-		if (flipGrapheme(flipGrapheme(accepted)) === accepted) {
-			acceptedOneWayFlipsNotOneWay.push([accepted, flipGrapheme(accepted), flipGrapheme(flipGrapheme(accepted))]);
-		}
-	}
-	if (acceptedOneWayFlipsNotOneWay.length > 0) {
-		console.log("There are accepted one-way flips that are not one-way:", acceptedOneWayFlipsNotOneWay.map((array) =>
-			array.join(" ⟶ ")
-		));
-	}
-	// detect mappings that won't apply because the text won't be split at that boundary
-	const unapplicableMappings = [];
-	for (const grapheme of allKeys) {
-		if (!splitter.splitGraphemes(`Test${grapheme}Test`).includes(grapheme)) {
-			unapplicableMappings.push(grapheme);
-		} else if (`<${flipGrapheme(grapheme)}>` !== flipText(`<${grapheme}>`)) {
-			console.warn("How did this happen? splitGraphemes gives the key, but flipText doesn't give the same result?");
-			unapplicableMappings.push(grapheme);
-		}
-	}
-	if (unapplicableMappings.length > 0) {
-		console.log("There are mappings that won't apply because the text won't be split at that boundary:", unapplicableMappings);
-	}
-	// detect redundant mappings that are same between ASCII and Unicode
-	const redundantMappings = [];
-	for (const grapheme of allKeys) {
-		if (asciiMirrorCharacters[grapheme] === unicodeMirrorCharacters[grapheme]) {
-			redundantMappings.push(grapheme);
-		}
-	}
-	if (redundantMappings.length > 0) {
-		console.log("There are redundant mappings that are same between ASCII and Unicode:", redundantMappings);
-	}
-
-	// #endregion
-
 	function flipGrapheme(grapheme, asciiOnly) {
 		if (grapheme in unicodeMirrorCharacters && !asciiOnly) {
 			return unicodeMirrorCharacters[grapheme];
@@ -1846,8 +1767,6 @@
 		console.log("Didn't find matching pairs for:", notFound);
 	}
 
-	// (TODO: This is more of a sanity check, maybe should move into other code region.)
-	// (Or, shouldn't sanity checks be in the tests?)
 	function detectMissingMirrors(searchGlyphs) {
 		if (typeof searchGlyphs === "string") {
 			searchGlyphs = splitter.splitGraphemes(searchGlyphs);
@@ -1870,16 +1789,30 @@
 		}
 		// return missingMirrors;
 	}
-
 	// #endregion
 
 	window.flipText = flipText;
 	flipText.parseText = parseText;
 	flipText.visualizeParse = visualizeParse;
 	flipText.blockifyText = blockifyText;
+	// TODO: these don't make sense as public functions
+	// - searchForMirrorsInUnicodeData uses a hardcoded unicode data file path
+	// - detectMissingMirrors just outputs to the console
+	// - searchForMirrorsWithVisualMatching is very slow
+	// - all three are really only for maintenance of the mirror mappings
 	flipText.searchForMirrorsWithVisualMatching = searchForMirrorsWithVisualMatching;
 	flipText.searchForMirrorsInUnicodeData = searchForMirrorsInUnicodeData;
 	flipText.detectMissingMirrors = detectMissingMirrors;
+
+	flipText._private = {
+		unicodeMirrorCharacters,
+		asciiMirrorCharacters,
+		symmetricalGlyphs,
+		acceptedOneWayFlips,
+		nonMirrors,
+		flipGrapheme,
+		splitter,
+	};
 
 	// console.log(searchForMirrorsWithVisualMatching("AB{}[]()<>"));
 	// console.log(searchForMirrorsWithVisualMatching("▀▁▂▃▄▅▆▇█▉▊▋▌▍▎▏▐░▒▓▔▕▖▗▘▙▚▛▜▝▞▟"));
@@ -1911,9 +1844,9 @@
 	// 	U+25Ex	◠	◡	◢	◣	◤	◥	◦	◧	◨	◩	◪	◫	◬	◭	◮	◯
 	// 	U+25Fx	◰	◱	◲	◳	◴	◵	◶	◷	◸	◹	◺	◻	◼	◽	◾	◿
 	// `;
-	// searchForMirrorsWithVisualMatching(symbolsForLegacyComputing);
+	// console.log(searchForMirrorsWithVisualMatching(symbolsForLegacyComputing));
 	// detectMissingMirrors(symbolsForLegacyComputing);
-	// searchForMirrorsWithVisualMatching(geometricShapes);
+	// console.log(searchForMirrorsWithVisualMatching(geometricShapes));
 	// detectMissingMirrors(geometricShapes);
 	detectMissingMirrors("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789");
 
