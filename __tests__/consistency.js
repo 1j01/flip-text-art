@@ -49,6 +49,7 @@ it("should not have one-way flips (except accepted ones)", () => {
 		}
 	}
 	if (unacceptedOneWayFlips.length > 0) {
+		/*
 		console.log("There are one-way flips that have not been accepted:", unacceptedOneWayFlips.map((array) =>
 			array.join(" ⟶ ")
 		));
@@ -64,9 +65,27 @@ it("should not have one-way flips (except accepted ones)", () => {
 		));
 		console.log("Note that some may be already in unicodeMirrorCharacters. You should use `npm run lint` to check for duplicate keys.");
 		console.groupEnd();
-		// TODO: adapt to Jest
-		// Also, show code points because it's hard to see some characters
-		throw new Error("There are one-way flips that have not been accepted. See console for details.");
+		*/
+		// TODO: show code points because it's hard to see some characters
+		// Also, include reverse mappings in the output
+		// Also, what's up with this note about duplicate keys?
+		// When is that a problem, and is it preventable, or does it require consideration when it occurs?
+		const newMappings = Object.fromEntries(
+			unacceptedOneWayFlips.map((array) => [array[1], array[0]])
+		);
+		const unacceptedRepresentation = unacceptedOneWayFlips.map((array) =>
+			array.join(" ⟶ ")
+		).join("\n  ");
+		throw new Error(`There are one-way flips that have not been accepted:
+  ${unacceptedRepresentation}
+
+To accept:
+  Add these to acceptedOneWayFlips: ${JSON.stringify(unacceptedOneWayFlips.map((array) => array[0]))}
+
+To add as mirrors:
+  Add these to unicodeMirrorCharacters: ${JSON.stringify(newMappings, null, "\t").replace(/\n/g, "\n  ")}
+  Note that some may be already in unicodeMirrorCharacters. You should use \`npm run lint\` to check for duplicate keys.`);
+
 	}
 });
 
