@@ -69,7 +69,7 @@ To add as mirrors:
 	}
 });
 
-it("should not have accepted one-way flips that are not one-way", () => {
+it("should only include glyphs with irreversible translations in acceptedOneWayFlips", () => {
 	const acceptedOneWayFlipsNotOneWay = [];
 	for (const accepted of acceptedOneWayFlips) {
 		if (flipGrapheme(flipGrapheme(accepted)) === accepted) {
@@ -77,10 +77,10 @@ it("should not have accepted one-way flips that are not one-way", () => {
 		}
 	}
 	if (acceptedOneWayFlipsNotOneWay.length > 0) {
-		const arrowLines = acceptedOneWayFlipsNotOneWay.map((array) =>
-			array.join(" ⟶ ")
+		const arrowLines = acceptedOneWayFlipsNotOneWay.map((translationPath) =>
+			`${JSON.stringify(translationPath[0])} (${translationPath.join(" ⟶ ")})`
 		);
-		throw new Error(`There are accepted one-way flips that are not one-way:
+		throw new Error(`acceptedOneWayFlips has glyphs that are not one-way translations in practice:
   ${arrowLines.join("\n  ")}`);
 	}
 });
