@@ -98,9 +98,11 @@ it("should not have accepted one-way flips that are not one-way", () => {
 		}
 	}
 	if (acceptedOneWayFlipsNotOneWay.length > 0) {
-		console.log("There are accepted one-way flips that are not one-way:", acceptedOneWayFlipsNotOneWay.map((array) =>
+		const arrowLines = acceptedOneWayFlipsNotOneWay.map((array) =>
 			array.join(" ⟶ ")
-		));
+		);
+		throw new Error(`There are accepted one-way flips that are not one-way:
+  ${arrowLines.join("\n  ")}`);
 	}
 });
 // detect mappings that won't apply because the text won't be split at that boundary
