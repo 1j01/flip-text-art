@@ -9,7 +9,6 @@ const {
 	asciiMirrorCharacters,
 	symmetricalGlyphs,
 	acceptedOneWayFlips,
-	// nonMirrors,
 	flipGrapheme,
 	splitter,
 } = flipText._private;
@@ -22,7 +21,6 @@ function uniquify(array) {
 	return Array.from(new Set(array));
 }
 
-// detect duplicates
 it("should not have duplicates in symmetricalGlyphs", () => {
 	const duplicatesInSymmetricalGlyphs = findDuplicates(symmetricalGlyphs);
 	if (duplicatesInSymmetricalGlyphs.length > 0) {
@@ -36,7 +34,6 @@ it("should not have duplicates in acceptedOneWayFlips", () => {
 	}
 });
 
-// detect one-way flips
 it("should not have one-way flips (except accepted ones)", () => {
 	const unacceptedOneWayFlips = [];
 	for (const key of allKeys) {
@@ -49,23 +46,6 @@ it("should not have one-way flips (except accepted ones)", () => {
 		}
 	}
 	if (unacceptedOneWayFlips.length > 0) {
-		/*
-		console.log("There are one-way flips that have not been accepted:", unacceptedOneWayFlips.map((array) =>
-			array.join(" ⟶ ")
-		));
-		console.groupCollapsed("To accept");
-		console.log("Add these to acceptedOneWayFlips:", unacceptedOneWayFlips.map((array) => array[0]));
-		console.groupEnd();
-		console.groupCollapsed("To add as mirrors");
-		console.log("Add these to unicodeMirrorCharacters:", JSON.stringify(
-			Object.fromEntries(
-				unacceptedOneWayFlips.map((array) => [array[1], array[0]])
-			),
-			null, "\t"
-		));
-		console.log("Note that some may be already in unicodeMirrorCharacters. You should use `npm run lint` to check for duplicate keys.");
-		console.groupEnd();
-		*/
 		// TODO: show code points because it's hard to see some characters
 		// Also, include reverse mappings in the output
 		// Also, what's up with this note about duplicate keys?
@@ -89,7 +69,6 @@ To add as mirrors:
 	}
 });
 
-// detect accepted one-way flips that are not one-way (keeping the acceptance list sensible)
 it("should not have accepted one-way flips that are not one-way", () => {
 	const acceptedOneWayFlipsNotOneWay = [];
 	for (const accepted of acceptedOneWayFlips) {
@@ -105,25 +84,19 @@ it("should not have accepted one-way flips that are not one-way", () => {
   ${arrowLines.join("\n  ")}`);
 	}
 });
-// detect mappings that won't apply because the text won't be split at that boundary
+
 it("should not have mappings that won't apply because the text won't be split at that boundary", () => {
 	const unapplicableMappings = [];
 	for (const grapheme of allKeys) {
 		if (!splitter.splitGraphemes(`Test${grapheme}Test`).includes(grapheme)) {
 			unapplicableMappings.push(grapheme);
 		} else if (`<${flipGrapheme(grapheme)}>` !== flipText(`<${grapheme}>`)) {
-			// console.warn("How did this happen? splitGraphemes gives the key, but flipText doesn't give the same result?");
-			// unapplicableMappings.push(grapheme);
 			throw new Error("How did this happen? splitGraphemes gives the key, but flipText doesn't give the same result?");
 		}
 	}
-	// if (unapplicableMappings.length > 0) {
-	// 	console.log("There are mappings that won't apply because the text won't be split at that boundary:", unapplicableMappings);
-	// }
 	expect(unapplicableMappings).toEqual([]);
 });
 
-// detect redundant mappings that are same between ASCII and Unicode
 it("should not have redundant mappings that are same between ASCII and Unicode", () => {
 	const redundantMappings = [];
 	for (const grapheme of allKeys) {
@@ -131,8 +104,5 @@ it("should not have redundant mappings that are same between ASCII and Unicode",
 			redundantMappings.push(grapheme);
 		}
 	}
-	// if (redundantMappings.length > 0) {
-	// 	console.log("There are redundant mappings that are same between ASCII and Unicode:", redundantMappings);
-	// }
 	expect(redundantMappings).toEqual([]);
 });
