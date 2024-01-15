@@ -5,6 +5,7 @@
 	"main": "flip-text-art.js",
 	"scripts": {
 		"test": "jest",
+		"test:watch": "jest --watchAll",
 		"lint": "cspell-cli lint . && eslint --config .eslintrc.js .",
 		"start": "live-server --port=8008"
 	},
